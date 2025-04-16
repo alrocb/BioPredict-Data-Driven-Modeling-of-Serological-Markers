@@ -100,6 +100,51 @@ def remove_high_missing_columns(df, threshold=95):
     # Drop the columns
     return df.drop(columns=cols_to_drop)
 
+def impute_missing_values(df):
+    """
+    Impute missing values based on variable-specific 'don't know' codes.
+    
+    For each column, missing values are filled with the corresponding code:
+      - If a specific "don't know" code is provided, that value is used.
+      - For variables with no explicit mapping, missing values are imputed with 0.
+    
+    Parameters:
+    -----------
+    df : pandas.DataFrame
+        The input dataframe
+        
+    Returns:
+    --------
+    pandas.DataFrame
+        DataFrame with missing values imputed according to predefined mapping.
+    """
+    impute_mapping = {
+        'DMDBORN4': 99,       # Country_of_Birth: don't know = 99
+        'INDFMPIR': 0,        # Income_to_Poverty_Ratio: no "don't know" provided → 0
+        'RIAGENDR': 0,        # Gender: no "don't know" provided → 0
+        'RIDAGEYR': 0,        # Age: no mapping provided → 0
+        'DMDHRBR4': 99,       # Household_Reference_Country: don't know = 99
+        'DMDEDUC2': 9,        # Education_Level: don't know = 9
+        'DMDMARTL': 99,       # Marital_Status: don't know = 99
+        'DMDHHSIZ': 0,        # Household Size: no mapping provided → 0
+        'INDFMIN2': 99,       # Family_Income: don't know = 99
+        'RIDRETH1': 0,        # Race_Ethnicity: no "don't know" provided → 0
+        'DUQ370': 9,          # Injected_Drugs_Ever: don't know = 9
+        'IMQ020': 9,          # HepatitisB_Vaccinated: don't know = 7
+        'ALQ120Q': 999,       # Alcohol_Frequency_12m: don't know = 999
+        'OHXIMP': 0,          # Dental_Implant: no mapping provided → 0
+        'SXQ251': 9,          # Unprotected_Sex_12m: don't know = 9
+        'HIQ031A': 99,        # Private_Insurance: impute as 77 per instruction
+        'BMXBMI': 0,          # Body_Mass_Index: no mapping provided → 0
+        'BMXWAIST': 0,        # Waist_Circumference: no mapping provided → 0
+        'LBXHBS': 0,          # Additional variable: no mapping provided → 0
+    }
+    # Apply imputation only for columns present in the DataFrame
+    for col, fill_value in impute_mapping.items():
+        if col in df.columns:
+            df[col] = df[col].fillna(fill_value)
+    return df
+
 def remove_low_variance_features(df, threshold=0.01):
     """
     Remove features with low variance.
@@ -158,7 +203,7 @@ def clean_data(input_path, output_path, target_column, missing_threshold=95, var
     """
     logger.info(f"Loading data from {input_path}")
     df = pd.read_csv(input_path)
-    # Get df rows
+    # Get df rows and columns for logging
     df_rows = df.shape[0]
     df_columns = df.shape[1]
     
@@ -167,14 +212,17 @@ def clean_data(input_path, output_path, target_column, missing_threshold=95, var
     logger.info(f"Target column '{target_column}' has {missing_stats['target_missing_percentage']:.2f}% missing values")
     
     # Remove rows with missing target values
-    logger.info(f"Removing rows with missing target values")
+    logger.info("Removing rows with missing target values")
     df = df.dropna(subset=[target_column])
     
     # Remove columns with high missing values
     df_reduced = remove_high_missing_columns(df, threshold=missing_threshold)
     
+    # Impute missing values based on specific 'don't know' codes
+    df_imputed = impute_missing_values(df_reduced)
+    
     # Remove low-variance features
-    df_cleaned = remove_low_variance_features(df_reduced, threshold=variance_threshold)
+    df_cleaned = remove_low_variance_features(df_imputed, threshold=variance_threshold)
     
     # Save the cleaned data
     logger.info(f"Saving cleaned data to {output_path}")

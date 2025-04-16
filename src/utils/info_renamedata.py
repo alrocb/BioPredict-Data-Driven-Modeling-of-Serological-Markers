@@ -33,9 +33,9 @@ def load_data(file_path):
     df = pd.read_csv(file_path)
     return df
 
-def preprocess_data(df):
+def rename_and_select_data(df):
     """
-    Preprocess the DataFrame: select columns, impute missing values, and rename columns.
+    Rename columns for clarity and select only the relevant ones.
     
     Parameters
     ----------
@@ -45,28 +45,9 @@ def preprocess_data(df):
     Returns
     -------
     pandas.DataFrame
-        Preprocessed DataFrame.
+        Cleaned DataFrame with selected and renamed columns.
     """
-    # Select columns of interest
-    cols = ['SEQN', 'LBXHBS', 'DMDBORN4', 'INDFMPIR', 'RIAGENDR', 'RIDAGEYR', 'DMDHRBR4',
-            'DMDEDUC2', 'DMDMARTL', 'DMDHHSIZ', 'INDFMIN2', 'RIDRETH1', 'DUQ370',
-            'IMQ020', 'ALQ120Q', 'OHXIMP', 'SXQ251', 'HIQ031A', 'BMXBMI', 'BMXWAIST']
-    df = df[cols]
-    
-    # Impute missing values for numeric columns with the median
-    numeric_cols = df.select_dtypes(include=['number']).columns
-    for col in numeric_cols:
-        if df[col].isnull().sum() > 0:
-            df[col] = df[col].fillna(df[col].median())
-    
-    # Impute missing values for categorical columns with the mode
-    categorical_cols = df.select_dtypes(include=['object', 'category']).columns
-    for col in categorical_cols:
-        if df[col].isnull().sum() > 0:
-            df[col] = df[col].fillna(df[col].mode()[0])
-    
-    # Rename columns for clarity
-    df = df.rename(columns={
+    column_mapping = {
         "DMDBORN4": "Country_of_Birth",
         "INDFMPIR": "Income_to_Poverty_Ratio",
         "RIAGENDR": "Gender",
@@ -86,8 +67,12 @@ def preprocess_data(df):
         "BMXBMI": "Body_Mass_Index",
         "BMXWAIST": "Waist_Circumference",
         "LBXHBS": "HBsAg"
-    })
+    }
+
+    # Select and rename columns
+    df = df[list(column_mapping.keys())].rename(columns=column_mapping)
     return df
+
 
 def display_data_info(df):
     """

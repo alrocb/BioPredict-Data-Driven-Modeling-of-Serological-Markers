@@ -47,7 +47,7 @@ def setup_experiment(modeling_df, target_column='HBsAg', train_size=0.7, session
         target=target_column,
         train_size=train_size,
         session_id=session_id,
-        log_experiment=True  # Avoid MLflow logging issues
+        log_experiment=False  # Avoid MLflow logging issues
     )
     return exp
 

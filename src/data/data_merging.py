@@ -17,7 +17,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-PRIMARY_KEY = "SEQN"
+PRIMARY_KEY = "SEQN" 
 
 def get_project_root():
     """Returns the absolute path to the project root directory."""

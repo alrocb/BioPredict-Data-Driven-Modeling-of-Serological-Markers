@@ -12,7 +12,7 @@ from datetime import datetime
 
 # Import modules from the package
 from utils.output_capture import OutputCapture
-from utils.info_renamedata import load_data, preprocess_data, display_data_info
+from utils.info_renamedata import load_data, rename_and_select_data, display_data_info
 from visualizations.plots import plot_correlation_heatmap, move_plots
 from models.models_training import (
     setup_experiment,
@@ -27,7 +27,7 @@ from models.model_interpretation import interpret_model, analyze_feature_importa
 # Additional modules for conversion, merging, and cleaning
 from data.data_conversion import convert_xpt_to_csv
 from data.data_merging import merge_nhanes_data
-from data.data_cleaning import clean_data
+from data.data_cleaning import clean_data, impute_missing_values
 
 def main():
     # Create output directory for logs and results
@@ -72,7 +72,7 @@ def main():
         # 3. Data Cleaning
         # ---------------------------
         cleaned_file = os.path.join(processed_dir, "merged_cleaned.csv")
-        target_column = 'LBXHBC'
+        target_column = 'LBXHBS'
         print("Starting Data Cleaning Process")
         clean_data(merged_file, cleaned_file, target_column)
         print("Data Cleaning Completed.")
@@ -82,13 +82,21 @@ def main():
         # ---------------------------
         print("Starting Data Loading and Preprocessing for Analysis")
         df = load_data(cleaned_file)
+        
+        # Make sure any remaining missing values are imputed
+        print("Imputing any remaining missing values")
+        df = impute_missing_values(df)
+        
+        print("Renaming and Selecting Selected Features")
+        # Rename and select relevant columns
+        # This function also returns a string with the info of the DataFrame
+        df = rename_and_select_data(df)
         info_str, missing_values = display_data_info(df)
-        print("Dataset Info:")
+        print("Renamed and Selected Data Info:")
         print(info_str)
-        print("Percentage of Missing Values:")
+        print("Percentage of Missing Values after Renaming:")
         print(missing_values)
         
-        df = preprocess_data(df)
         
         # Plot correlation heatmap
         plot_path = os.path.join(output_dir, "plots", "correlation_heatmap.png")
