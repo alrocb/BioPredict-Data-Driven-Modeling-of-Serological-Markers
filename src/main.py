@@ -13,7 +13,7 @@ from datetime import datetime
 # Import modules from the package
 from utils.output_capture import OutputCapture
 from utils.info_renamedata import load_data, rename_and_select_data, display_data_info
-from visualizations.plots import plot_correlation_heatmap, move_plots
+from visualizations.plots import plot_correlation_heatmap, move_plots, move_html
 from models.models_training import (
     setup_experiment,
     compare_and_select_model,
@@ -22,7 +22,12 @@ from models.models_training import (
     generate_classification_report,
     refine_and_save_models
 )
-from models.model_interpretation import interpret_model, analyze_feature_importance
+from models.model_interpretation import (
+    interpret_model,
+    generate_all_interpretation_plots,
+    generate_shap_plots,
+    check_model_fairness
+)
 
 # Additional modules for conversion, merging, and cleaning
 from data.data_conversion import convert_xpt_to_csv
@@ -108,8 +113,7 @@ def main():
         modeling_df = df.copy()
         exp = setup_experiment(modeling_df, target_column='HBsAg')
         best_model, model_results = compare_and_select_model(exp)
-        print("Model Comparison Results:")
-        print(model_results)
+
         
         # ---------------------------
         # 6. Visualization and Evaluation
@@ -118,31 +122,40 @@ def main():
         predictions = evaluate_model(exp, best_model, output_dir)
         print("Predictions (first 5 rows):")
         print(predictions.head())
-        report = generate_classification_report(predictions)
-        print("Classification Report:")
-        print(report)
-        
+        #report = generate_classification_report(predictions)  --> This could be removed
+        #print("Classification Report:")
+        #print(report)
+        plots_dir = os.path.join(output_dir, "plots")
+        os.makedirs(plots_dir, exist_ok=True)
+        move_plots(os.getcwd(), plots_dir)
         # ---------------------------
-        # 7. Model Interpretability (e.g., SHAP)
+        # 7. Model Interpretability 
         # ---------------------------
-        interpret_model(exp, best_model, output_dir, method='shap')
+        print("Starting Model Interpretability Analysis")
+ 
+        # Create output directories
+
+        # Generate model interpretation plots (SHAP, PDP, etc.)
+        generate_all_interpretation_plots(exp, best_model, output_dir)
         
+        # Check model fairness across demographic features
+        sensitive_features = ['Sex', 'Race_Ethnicity', 'Age']
+        check_model_fairness(exp, best_model, sensitive_features, output_dir)
+        
+        print("Model Interpretability Analysis Completed.")
+        interpretability_dir = os.path.join(output_dir, "interpretability")
+        os.makedirs(interpretability_dir, exist_ok=True)
+        move_html(os.getcwd(), interpretability_dir)
         # ---------------------------
         # 8. Model Refinement and Saving
         # ---------------------------
         refine_and_save_models(exp, best_model, output_dir)
         
-        # ---------------------------
-        # 9. Feature Importance Analysis
-        # ---------------------------
-        plots_dir = os.path.join(output_dir, "plots")
-        analyze_feature_importance(exp, best_model, output_dir, plots_dir)
-        
         # Optionally, move any remaining plots from working directory to plots_dir
-        move_plots(os.getcwd(), plots_dir)
+        
         
         # ---------------------------
-        # 10. Final Summary
+        # 9. Final Summary
         # ---------------------------
         print("=" * 80)
         print(f"Analysis completed successfully at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

@@ -212,9 +212,9 @@ def clean_data(input_path, output_path, target_column, missing_threshold=95, var
     logger.info(f"Target column '{target_column}' has {missing_stats['target_missing_percentage']:.2f}% missing values")
     
     # Remove rows with missing target values
-    logger.info("Removing rows with missing target values")
-    df = df.dropna(subset=[target_column])
     
+    df = df.dropna(subset=[target_column])
+
     # Remove columns with high missing values
     df_reduced = remove_high_missing_columns(df, threshold=missing_threshold)
     

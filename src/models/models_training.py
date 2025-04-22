@@ -11,6 +11,7 @@ import pandas as pd
 from pycaret.classification import ClassificationExperiment
 from sklearn.metrics import classification_report
 import matplotlib.pyplot as plt
+import logging
 
 def setup_experiment(modeling_df, target_column='HBsAg', train_size=0.7, session_id=123):
     """
@@ -33,14 +34,17 @@ def setup_experiment(modeling_df, target_column='HBsAg', train_size=0.7, session
         Configured PyCaret experiment.
     """
     # End any active MLflow run
-    if mlflow.active_run():
-        mlflow.end_run()
-    mlflow.set_experiment("PyCaret_Classification_Experiment")
+    #if mlflow.active_run():
+    #    mlflow.end_run()
+    #mlflow.set_experiment("PyCaret_Classification_Experiment")
     
     # Drop identifier column if present
     if 'SEQN' in modeling_df.columns:
         modeling_df = modeling_df.drop('SEQN', axis=1)
     
+    logging.info("Setting up PyCaret experiment...")
+    print("Setting up PyCaret experiment...")
+    # Initialize the PyCaret classification experiment
     exp = ClassificationExperiment()
     exp.setup(
         data=modeling_df,
@@ -48,6 +52,7 @@ def setup_experiment(modeling_df, target_column='HBsAg', train_size=0.7, session
         train_size=train_size,
         session_id=session_id,
         log_experiment=False  # Avoid MLflow logging issues
+        
     )
     return exp
 
@@ -83,7 +88,7 @@ def generate_visualizations(exp, best_model, output_dir):
     output_dir : str
         Directory where plots will be saved.
     """
-    plots = ['auc', 'confusion_matrix', 'learning', 'calibration', 'pr']
+    plots = ['auc','threshold','pr', 'confusion_matrix', 'error','class_report', 'boundary','feature','learning', 'calibration','lift','ks','gain']
     for plot in plots:
         exp.plot_model(best_model, plot=plot, save=True)
         print(f"{plot.capitalize()} plot saved")
@@ -120,24 +125,7 @@ def evaluate_model(exp, best_model, output_dir):
     print(f"Predictions saved to {predictions_file}")
     return predictions
 
-def generate_classification_report(predictions):
-    """
-    Generate a text classification report from predictions.
-    
-    Parameters
-    ----------
-    predictions : pandas.DataFrame
-        DataFrame containing true and predicted values.
-        
-    Returns
-    -------
-    str
-        Classification report as a string.
-    """
-    print("Generating classification report...")
-    pred_col = 'prediction_label' if 'prediction_label' in predictions.columns else 'Label'
-    report = classification_report(predictions['HBsAg'], predictions[pred_col])
-    return report
+
 
 def refine_and_save_models(exp, best_model, output_dir):
     """
@@ -154,9 +142,9 @@ def refine_and_save_models(exp, best_model, output_dir):
     """
     # Create, tune, and ensemble a Gradient Boosting Classifier (GBC)
     print("Refining model with Gradient Boosting...")
-    gbc = exp.create_model('gbc', fold=10)
-    tuned_gbc = exp.tune_model(gbc)
-    bagged_gbc = exp.ensemble_model(tuned_gbc)
+    gbc = exp.create_model('gbc', fold=30)
+    tuned_gbc = exp.tune_model(gbc, choose_better = True)
+    bagged_gbc = exp.ensemble_model(tuned_gbc, choose_better = True)
     
     model_dir = os.path.join(output_dir, "models")
     os.makedirs(model_dir, exist_ok=True)
@@ -165,6 +153,4 @@ def refine_and_save_models(exp, best_model, output_dir):
     exp.save_model(best_model, best_model_path)
     print(f"Best model saved to {best_model_path}")
     
-    refined_model_path = os.path.join(model_dir, "refined_model_pipeline")
-    exp.save_model(bagged_gbc, refined_model_path)
-    print(f"Refined model saved to {refined_model_path}")
+

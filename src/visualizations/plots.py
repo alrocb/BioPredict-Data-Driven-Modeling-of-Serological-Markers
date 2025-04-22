@@ -57,3 +57,24 @@ def move_plots(source_dir, dest_dir):
         dest_path = os.path.join(dest_dir, file)
         os.rename(source_path, dest_path)
         print(f"Moved {file} to {dest_dir}")
+
+
+def move_html(source_dir, dest_dir):
+    """
+    Move HTML files from a source directory to a destination directory.
+    
+    Parameters
+    ----------
+    source_dir : str
+        Directory to search for .html files.
+    dest_dir : str
+        Directory where the plot files will be moved.
+    """
+    if not os.path.exists(dest_dir):
+        os.makedirs(dest_dir)
+    html_files = [f for f in os.listdir(source_dir) if f.endswith('.html')]
+    for file in html_files:
+        source_path = os.path.join(source_dir, file)
+        dest_path = os.path.join(dest_dir, file)
+        os.rename(source_path, dest_path)
+        print(f"Moved {file} to {dest_dir}")
