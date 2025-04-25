@@ -3,7 +3,7 @@ Data Cleaning Module
 
 This module provides functions to clean and preprocess NHANES data.
 It handles missing values, removes columns with high missing percentages,
-and filters out low-variance features.
+filters out low-variance features, and drops specified columns.
 """
 
 import os
@@ -11,32 +11,10 @@ import pandas as pd
 import numpy as np
 from sklearn.feature_selection import VarianceThreshold
 import logging
-import yaml
+from utils.config_loader import load_config  # Import the centralized config loader
 
-# Set up logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+# Get logger for this module
 logger = logging.getLogger(__name__)
-
-def get_project_root():
-    """Get the absolute path to the project root directory."""
-    # Assuming this script is in src/data
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    src_dir = os.path.dirname(current_dir)
-    project_dir = os.path.dirname(src_dir)
-    return project_dir
-
-def load_config():
-    """Load configuration from the model config file."""
-    project_root = get_project_root()
-    config_path = os.path.join(project_root, 'configs', 'model1.yaml')
-    
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-    
-    return config
 
 def analyze_missing_values(df, target_column):
     """
@@ -100,49 +78,55 @@ def remove_high_missing_columns(df, threshold=95):
     # Drop the columns
     return df.drop(columns=cols_to_drop)
 
-def impute_missing_values(df):
+def drop_specified_columns(df, columns_to_drop):
     """
-    Impute missing values based on variable-specific 'don't know' codes.
-    
-    For each column, missing values are filled with the corresponding code:
-      - If a specific "don't know" code is provided, that value is used.
-      - For variables with no explicit mapping, missing values are imputed with 0.
-    
+    Drops columns specified in the configuration.
+
     Parameters:
     -----------
     df : pandas.DataFrame
-        The input dataframe
-        
+        The input dataframe.
+    columns_to_drop : list
+        A list of column names to drop.
+
     Returns:
     --------
     pandas.DataFrame
-        DataFrame with missing values imputed according to predefined mapping.
+        DataFrame with specified columns removed.
     """
-    impute_mapping = {
-        'DMDBORN4': 99,       # Country_of_Birth: don't know = 99
-        'INDFMPIR': 0,        # Income_to_Poverty_Ratio: no "don't know" provided → 0
-        'RIAGENDR': 0,        # Gender: no "don't know" provided → 0
-        'RIDAGEYR': 0,        # Age: no mapping provided → 0
-        'DMDHRBR4': 99,       # Household_Reference_Country: don't know = 99
-        'DMDEDUC2': 9,        # Education_Level: don't know = 9
-        'DMDMARTL': 99,       # Marital_Status: don't know = 99
-        'DMDHHSIZ': 0,        # Household Size: no mapping provided → 0
-        'INDFMIN2': 99,       # Family_Income: don't know = 99
-        'RIDRETH1': 0,        # Race_Ethnicity: no "don't know" provided → 0
-        'DUQ370': 9,          # Injected_Drugs_Ever: don't know = 9
-        'IMQ020': 9,          # HepatitisB_Vaccinated: don't know = 7
-        'ALQ120Q': 999,       # Alcohol_Frequency_12m: don't know = 999
-        'OHXIMP': 0,          # Dental_Implant: no mapping provided → 0
-        'SXQ251': 9,          # Unprotected_Sex_12m: don't know = 9
-        'HIQ031A': 99,        # Private_Insurance: impute as 77 per instruction
-        'BMXBMI': 0,          # Body_Mass_Index: no mapping provided → 0
-        'BMXWAIST': 0,        # Waist_Circumference: no mapping provided → 0
-        'LBXHBS': 0,          # Additional variable: no mapping provided → 0
-    }
+    existing_cols_to_drop = [col for col in columns_to_drop if col in df.columns]
+    if existing_cols_to_drop:
+        logger.info(f"Dropping specified columns: {existing_cols_to_drop}")
+        df = df.drop(columns=existing_cols_to_drop)
+    else:
+        logger.info("No specified columns to drop found in the DataFrame.")
+    return df
+
+def impute_missing_values(df, impute_mapping):
+    """
+    Impute missing values based on a provided mapping.
+
+    Parameters:
+    -----------
+    df : pandas.DataFrame
+        The input dataframe.
+    impute_mapping : dict
+        Dictionary mapping column names to imputation values.
+
+    Returns:
+    --------
+    pandas.DataFrame
+        DataFrame with missing values imputed according to the provided mapping.
+    """
+    logger.info("Imputing missing values based on configuration mapping.")
     # Apply imputation only for columns present in the DataFrame
+    imputed_count = 0
     for col, fill_value in impute_mapping.items():
         if col in df.columns:
-            df[col] = df[col].fillna(fill_value)
+            if df[col].isnull().any():
+                df[col] = df[col].fillna(fill_value)
+                imputed_count += 1
+    logger.info(f"Imputed missing values in {imputed_count} columns based on mapping.")
     return df
 
 def remove_low_variance_features(df, threshold=0.01):
@@ -179,78 +163,80 @@ def remove_low_variance_features(df, threshold=0.01):
     # Keep only the selected columns from the original dataframe
     return df[cols_variance]
 
-def clean_data(input_path, output_path, target_column, missing_threshold=95, variance_threshold=0.01):
+def clean_data(input_path, output_path, config):
     """
-    Main function to clean the data.
-    
+    Main function to clean the data using configuration parameters.
+
     Parameters:
     -----------
     input_path : str
-        Path to the input CSV file
+        Path to the input CSV file.
     output_path : str
-        Path where the cleaned data will be saved
-    target_column : str
-        Name of the target column
-    missing_threshold : float, default=95
-        Threshold for removing columns with high missing values
-    variance_threshold : float, default=0.01
-        Threshold for removing low-variance features
-        
+        Path where the cleaned data will be saved.
+    config : dict
+        Dictionary containing configuration parameters.
+
     Returns:
     --------
     pandas.DataFrame
-        The cleaned dataframe
+        The cleaned dataframe.
     """
+    # Extract parameters from config
+    data_cleaning_config = config['data_cleaning']
+    target_column = data_cleaning_config['target_column_raw']
+    missing_threshold = data_cleaning_config['missing_threshold']
+    variance_threshold = data_cleaning_config['variance_threshold']
+    impute_mapping = data_cleaning_config['imputation_mapping']
+    columns_to_drop = data_cleaning_config.get('columns_to_drop', [])  # Use .get for optional keys
+
     logger.info(f"Loading data from {input_path}")
     df = pd.read_csv(input_path)
-    # Get df rows and columns for logging
-    df_rows = df.shape[0]
-    df_columns = df.shape[1]
-    
-    # Analyze missing values
+    df_rows, df_columns = df.shape
+
+    # Analyze missing values for the raw target column
     missing_stats = analyze_missing_values(df, target_column)
-    logger.info(f"Target column '{target_column}' has {missing_stats['target_missing_percentage']:.2f}% missing values")
-    
+    logger.info(f"Target column '{target_column}' has {missing_stats['target_missing_percentage']:.2f}% missing values before cleaning.")
+
     # Remove rows with missing target values
-    
+    initial_rows = len(df)
     df = df.dropna(subset=[target_column])
+    rows_dropped = initial_rows - len(df)
+    logger.info(f"Removed {rows_dropped} rows with missing target values ('{target_column}').")
+
+    # Drop specified columns (e.g., 'SEQN') BEFORE other cleaning steps
+    df = drop_specified_columns(df, columns_to_drop)
 
     # Remove columns with high missing values
     df_reduced = remove_high_missing_columns(df, threshold=missing_threshold)
-    
-    # Impute missing values based on specific 'don't know' codes
-    df_imputed = impute_missing_values(df_reduced)
-    
+
+    # Impute remaining missing values based on config mapping
+    df_imputed = impute_missing_values(df_reduced, impute_mapping)
+
     # Remove low-variance features
     df_cleaned = remove_low_variance_features(df_imputed, threshold=variance_threshold)
-    
+
     # Save the cleaned data
     logger.info(f"Saving cleaned data to {output_path}")
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)  # Ensure dir exists
     df_cleaned.to_csv(output_path, index=False)
-    
-    logger.info(f"Data cleaning complete. Original shape: {df_rows, df_columns}, Cleaned shape: {df_cleaned.shape}")
-    
+
+    logger.info(f"Data cleaning complete. Original shape: {(df_rows, df_columns)}, Cleaned shape: {df_cleaned.shape}")
+
     return df_cleaned
 
 def main():
-    """Main function to execute the data cleaning process."""
+    """Main function to execute the data cleaning process using config."""
     # Load configuration
-    config = load_config()
-    target_variable = config['data']['target_variable']
-    missing_threshold = config['data']['missing_threshold']
-    variance_threshold = config['data']['variance_threshold']
-    
-    project_root = get_project_root()
-    
-    # Define input and output paths
-    input_path = os.path.join(project_root, "data", "extra", "merged.csv")
-    output_path = os.path.join(project_root, "data", "processed", "merged_cleaned.csv")
-    
-    # Ensure the output directory exists
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    
+    config = load_config()  # Load the main config
+
+    # Get paths from config
+    paths_config = config['paths']
+    input_path = paths_config['merged_file']
+    output_path = paths_config['cleaned_file']
+
     logger.info("Starting data cleaning process")
-    clean_data(input_path, output_path, target_variable, missing_threshold, variance_threshold)
+    # Pass the whole config to clean_data
+    clean_data(input_path, output_path, config)
     logger.info("Data cleaning completed successfully")
 
 if __name__ == "__main__":

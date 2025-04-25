@@ -13,8 +13,7 @@ import logging
 import shap
 from pycaret.classification import ClassificationExperiment
 
-# Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# Get logger for this module
 logger = logging.getLogger(__name__)
 
 def interpret_model(exp, model, plot_type='summary', feature=None, save=True, output_dir=None):
@@ -67,7 +66,6 @@ def interpret_model(exp, model, plot_type='summary', feature=None, save=True, ou
         return plot
     except Exception as e:
         logger.error(f"Error generating {plot_type} plot: {str(e)}")
-        print(f"Error generating {plot_type} plot: {str(e)}")
         return None
 
 def generate_shap_plots(exp, model, output_dir):
@@ -84,6 +82,7 @@ def generate_shap_plots(exp, model, output_dir):
         Directory to save plots.
     """
     logger.info("Generating SHAP plots using SHAP library")
+    # Make sure we're using the run-specific plots directory
     plots_dir = os.path.join(output_dir, "plots")
     os.makedirs(plots_dir, exist_ok=True)
     
@@ -104,9 +103,9 @@ def generate_shap_plots(exp, model, output_dir):
         try:
             explainer = shap.TreeExplainer(estimator)
             shap_values = explainer.shap_values(X_sample)
-            print("Using TreeExplainer for SHAP")
+            logger.info("Using TreeExplainer for SHAP")
         except Exception:
-            print("TreeExplainer failed, using KernelExplainer")
+            logger.warning("TreeExplainer failed, using KernelExplainer")
             # Use KernelExplainer as fallback
             if hasattr(estimator, 'predict_proba'):
                 explainer = shap.KernelExplainer(estimator.predict_proba, shap.sample(X_sample, 50))
@@ -127,7 +126,7 @@ def generate_shap_plots(exp, model, output_dir):
         summary_path = os.path.join(plots_dir, "shap_summary_plot.png")
         plt.savefig(summary_path)
         plt.close()
-        print(f"SHAP summary plot saved to {summary_path}")
+        logger.info(f"SHAP summary plot saved to {summary_path}")
         
         # Bar plot of feature importance
         plt.figure(figsize=(12, 8))
@@ -136,13 +135,12 @@ def generate_shap_plots(exp, model, output_dir):
         bar_path = os.path.join(plots_dir, "shap_importance_plot.png")
         plt.savefig(bar_path)
         plt.close()
-        print(f"SHAP feature importance plot saved to {bar_path}")
+        logger.info(f"SHAP feature importance plot saved to {bar_path}")
         
         return True
         
     except Exception as e:
         logger.error(f"Error generating SHAP plots: {str(e)}")
-        print(f"Error generating SHAP plots: {str(e)}")
         return False
 
 def generate_all_interpretation_plots(exp, model, output_dir):
@@ -163,29 +161,29 @@ def generate_all_interpretation_plots(exp, model, output_dir):
     
     
     # Try direct SHAP implementation first (most robust)
-    print("Generating SHAP plots...")
+    logger.info("Generating SHAP plots...")
     shap_success = generate_shap_plots(exp, model, output_dir)
     
     # Generate PyCaret plots that work with most models
-    print("Generating Partial Dependence plots...")
+    logger.info("Generating Partial Dependence plots...")
     interpret_model(exp, model, plot_type='pdp', save=True, output_dir=plots_dir)
     
-    print("Generating Morris Sensitivity Analysis...")
+    logger.info("Generating Morris Sensitivity Analysis...")
     interpret_model(exp, model, plot_type='msa', save=True, output_dir=plots_dir)
     
-    print("Generating Permutation Feature Importance...")
+    logger.info("Generating Permutation Feature Importance...")
     interpret_model(exp, model, plot_type='pfi', save=True, output_dir=plots_dir)
     
     # Try correlation plots - these might fail for non-tree models
     try:
-        print("Generating correlation plots...")
+        logger.info("Generating correlation plots...")
         # Get top 3 features
         features = exp.get_config('X_train').columns.tolist()[:3]
         for feature in features:
             interpret_model(exp, model, plot_type='correlation', feature=feature, 
                           save=True, output_dir=plots_dir)
     except Exception:
-        print("Correlation plots could not be generated (only works with tree-based models)")
+        logger.warning("Correlation plots could not be generated (only works with tree-based models)")
 
 def check_model_fairness(exp, model, sensitive_features, output_dir):
     """
@@ -210,22 +208,21 @@ def check_model_fairness(exp, model, sensitive_features, output_dir):
         valid_features = [f for f in sensitive_features if f in available_features]
         
         if not valid_features:
-            print(f"Warning: None of the specified sensitive features {sensitive_features} exist in dataset")
+            logger.warning(f"None of the specified sensitive features {sensitive_features} exist in dataset")
             return None
         
         # Try PyCaret's fairness check
         fairness_results = exp.check_fairness(estimator=model, sensitive_features=valid_features)
         
-        # Save fairness results
+        # Save fairness results to the run directory
         fairness_file = os.path.join(output_dir, "fairness_metrics.csv")
         fairness_results.to_csv(fairness_file, index=False)
-        print(f"Fairness metrics saved to {fairness_file}")
+        logger.info(f"Fairness metrics saved to {fairness_file}")
         
         return fairness_results
         
     except Exception as e:
         logger.error(f"Error in fairness check: {str(e)}")
-        print(f"Error in fairness check: {str(e)}")
         return None
 
 if __name__ == "__main__":
@@ -234,7 +231,7 @@ if __name__ == "__main__":
     from models_training import setup_experiment, compare_and_select_model
     
     # Example usage (similar to what would be in main.py)
-    print("Loading data...")
+    logger.info("Loading data...")
     # Add code to load your dataframe here
     
     # Setup experiment

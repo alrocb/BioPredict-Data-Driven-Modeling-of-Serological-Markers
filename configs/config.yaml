@@ -1,0 +1,103 @@
+paths:
+  project_root: "." # Assuming execution from project root
+  raw_data: "data/raw"
+  interim_data: "data/interim"
+  extra_data: "data/extra"
+  processed_data: "data/processed"
+  output: "outputs"
+  run_dir: "outputs/run_{timestamp}" # New path template for timestamped runs
+  merged_file: "data/extra/merged.csv"
+  cleaned_file: "data/processed/merged_cleaned.csv"
+  log_file_template: "outputs/run_{timestamp}/analysis.txt"
+  plots_dir: "outputs/run_{timestamp}/plots"
+  interpretability_dir: "outputs/run_{timestamp}/interpretability"
+  models_dir: "outputs/run_{timestamp}/models"
+
+data_cleaning:
+  target_column_raw: 'LBXHBS' # Original name before renaming
+  missing_threshold: 95 # Percentage threshold to drop columns
+  variance_threshold: 0.01 # Variance threshold to drop features
+  columns_to_drop: # Columns to drop explicitly during cleaning
+    - 'SEQN' # Example identifier column often removed
+  imputation_mapping:
+    'DMDBORN4': 99
+    'INDFMPIR': 0
+    'RIAGENDR': 0
+    'RIDAGEYR': 0
+    'DMDHRBR4': 99
+    'DMDEDUC2': 9
+    'DMDMARTL': 99
+    'DMDHHSIZ': 0
+    'INDFMIN2': 99
+    'RIDRETH1': 0
+    'DUQ370': 9
+    'IMQ020': 9
+    'ALQ120Q': 999
+    'OHXIMP': 0
+    'SXQ251': 9
+    'HIQ031A': 99
+    'BMXBMI': 0
+    'BMXWAIST': 0
+    'LBXHBS': 0 # Target column imputation (if needed before dropping NaNs)
+
+data_preprocessing:
+  column_mapping:
+    "DMDBORN4": "Country_of_Birth"
+    "INDFMPIR": "Income_to_Poverty_Ratio"
+    "RIAGENDR": "Gender" # Renamed to Sex later? Check fairness features
+    "RIDAGEYR": "Age"
+    "DMDHRBR4": "Household_Reference_Country"
+    "DMDEDUC2": "Education_Level"
+    "DMDMARTL": "Marital_Status"
+    "DMDHHSIZ": "Household_Size"
+    "INDFMIN2": "Family_Income"
+    "RIDRETH1": "Race_Ethnicity"
+    "DUQ370": "Injected_Drugs_Ever"
+    "IMQ020": "HepatitisB_Vaccinated"
+    "ALQ120Q": "Alcohol_Frequency_12m"
+    "OHXIMP": "Dental_Implant"
+    "SXQ251": "Unprotected_Sex_12m"
+    "HIQ031A": "Private_Insurance"
+    "BMXBMI": "Body_Mass_Index"
+    "BMXWAIST": "Waist_Circumference"
+    "LBXHBS": "HBsAg" # Target column renamed
+
+modeling:
+  target_column: 'HBsAg' # Renamed target column for modeling
+  train_size: 0.7
+  session_id: 123
+  log_experiment: false
+  target_mapping: # Add this mapping
+    1.0: 1 # Map original positive class (1.0) to PyCaret positive (1)
+    2.0: 0 # Map original negative class (2.0) to PyCaret negative (0)
+  sensitive_features: # Features used for fairness check (use renamed versions)
+    - 'Gender' # Check if this should be 'Sex' based on final renaming/usage
+    - 'Race_Ethnicity'
+    - 'Age'
+  setup_params:
+    fix_imbalance: true          # turn SMOTE on/off here
+    fix_imbalance_method: smote  # smote | smotenc | adasyn | borderline_smote …
+    #normalize: true              # any other PyCaret flag you need later
+    #feature_selection: true
+# Add a new section for visualization configurations
+visualizations:
+  pycaret_plots: # List of plots for generate_visualizations
+    - 'auc'
+    - 'confusion_matrix'
+    - 'feature' 
+    - 'threshold'
+    - 'pr'
+    - 'error'
+    - 'class_report'
+    - 'boundary'
+    - 'learning'
+    - 'calibration'
+    - 'lift'
+    - 'ks'
+    - 'gain'
+
+logging:
+  log_file: "outputs/analysis.log" # Path for the log file
+  level: "INFO" # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  date_format: "%Y-%m-%d %H:%M:%S"

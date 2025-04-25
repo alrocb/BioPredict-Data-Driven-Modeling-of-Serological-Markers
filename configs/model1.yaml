@@ -1,7 +1,0 @@
-
-# Data settings
-data:
-  target_variable: 'LBXHBS'
-  missing_threshold: 95  # Percentage threshold for dropping columns with missing values
-  variance_threshold: 0.01  # Threshold for variance filter
-

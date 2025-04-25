@@ -2,12 +2,16 @@
 Data Preprocessing Module
 
 This module contains functions to load and preprocess the NHANES data.
-It handles tasks such as missing value imputation, column selection, and renaming.
+It handles tasks such as column selection and renaming based on configuration.
 """
 
 import os
 import pandas as pd
 from io import StringIO
+import logging  # Import logging
+
+# Get logger for this module
+logger = logging.getLogger(__name__)
 
 def load_data(file_path):
     """
@@ -33,46 +37,42 @@ def load_data(file_path):
     df = pd.read_csv(file_path)
     return df
 
-def rename_and_select_data(df):
+def rename_and_select_data(df, column_mapping):
     """
-    Rename columns for clarity and select only the relevant ones.
-    
+    Rename columns for clarity and select only the relevant ones based on the provided mapping.
+
     Parameters
     ----------
     df : pandas.DataFrame
-        Raw input DataFrame.
-        
+        Input DataFrame (should contain columns specified as keys in column_mapping).
+    column_mapping : dict
+        Dictionary mapping original column names (keys) to new names (values).
+
     Returns
     -------
     pandas.DataFrame
-        Cleaned DataFrame with selected and renamed columns.
+        DataFrame with selected and renamed columns.
+
+    Raises
+    ------
+    KeyError
+        If any column specified in the mapping keys is not found in the DataFrame.
     """
-    column_mapping = {
-        "DMDBORN4": "Country_of_Birth",
-        "INDFMPIR": "Income_to_Poverty_Ratio",
-        "RIAGENDR": "Gender",
-        "RIDAGEYR": "Age",
-        "DMDHRBR4": "Household_Reference_Country",
-        "DMDEDUC2": "Education_Level",
-        "DMDMARTL": "Marital_Status",
-        "DMDHHSIZ": "Household_Size",
-        "INDFMIN2": "Family_Income",
-        "RIDRETH1": "Race_Ethnicity",
-        "DUQ370": "Injected_Drugs_Ever",
-        "IMQ020": "HepatitisB_Vaccinated",
-        "ALQ120Q": "Alcohol_Frequency_12m",
-        "OHXIMP": "Dental_Implant",
-        "SXQ251": "Unprotected_Sex_12m",
-        "HIQ031A": "Private_Insurance",
-        "BMXBMI": "Body_Mass_Index",
-        "BMXWAIST": "Waist_Circumference",
-        "LBXHBS": "HBsAg"
-    }
+    logger.info("Renaming and selecting columns based on configuration...")
 
-    # Select and rename columns
-    df = df[list(column_mapping.keys())].rename(columns=column_mapping)
-    return df
+    # Check if all keys in the mapping exist in the DataFrame columns
+    missing_cols = [col for col in column_mapping.keys() if col not in df.columns]
+    if missing_cols:
+        raise KeyError(f"The following columns specified in the mapping were not found in the DataFrame: {missing_cols}")
 
+    # Select only the columns that are keys in the mapping
+    df_selected = df[list(column_mapping.keys())]
+
+    # Rename the selected columns
+    df_renamed = df_selected.rename(columns=column_mapping)
+
+    logger.info(f"Selected {len(df_renamed.columns)} columns and renamed them.")
+    return df_renamed
 
 def display_data_info(df):
     """

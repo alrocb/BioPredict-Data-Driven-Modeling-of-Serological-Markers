@@ -13,48 +13,57 @@ from sklearn.metrics import classification_report
 import matplotlib.pyplot as plt
 import logging
 
-def setup_experiment(modeling_df, target_column='HBsAg', train_size=0.7, session_id=123):
+# Get logger for this module
+logger = logging.getLogger(__name__)
+
+def setup_experiment(modeling_df, cfg):
+
     """
-    Set up a PyCaret classification experiment.
-    
+    Configure and launch a PyCaret *ClassificationExperiment*  
+    with **zero-code** control over every ``setup`` knob.
+
     Parameters
     ----------
     modeling_df : pandas.DataFrame
-        DataFrame containing features and target.
-    target_column : str, optional
-        Name of the target column (default is 'HBsAg').
-    train_size : float, optional
-        Proportion of data used for training (default is 0.7).
-    session_id : int, optional
-        Random seed for reproducibility (default is 123).
-        
+        The feature-matrix already containing the mapped target column.
+    cfg : dict
+        Full configuration dictionary (parsed from *config.yaml*).  
+        The function expects:
+        ::
+            cfg['modeling'] = {
+                'target_column' : <str>,
+                'train_size'    : <float>,
+                'session_id'    : <int>,
+                'setup_params'  : { … optional kwargs … }
+            }
+
     Returns
     -------
-    ClassificationExperiment
-        Configured PyCaret experiment.
+    pycaret.classification.ClassificationExperiment
+        A fully initialised experiment ready for
+        ``compare_models``, ``create_model`` … etc.
     """
-    # End any active MLflow run
-    #if mlflow.active_run():
-    #    mlflow.end_run()
-    #mlflow.set_experiment("PyCaret_Classification_Experiment")
-    
-    # Drop identifier column if present
-    if 'SEQN' in modeling_df.columns:
-        modeling_df = modeling_df.drop('SEQN', axis=1)
-    
-    logging.info("Setting up PyCaret experiment...")
-    print("Setting up PyCaret experiment...")
-    # Initialize the PyCaret classification experiment
+
+    modeling_cfg   = cfg['modeling']
+    target_column  = modeling_cfg['target_column']
+    train_size     = modeling_cfg['train_size']
+    session_id     = modeling_cfg['session_id']
+    setup_kwargs   = modeling_cfg.get('setup_params', {})   #  dynamic part
+    log_experiment = modeling_cfg.get('log_experiment', False)
+
+    logger.info("Setting up PyCaret experiment with kwargs: %s", setup_kwargs)
+
     exp = ClassificationExperiment()
     exp.setup(
         data=modeling_df,
         target=target_column,
         train_size=train_size,
         session_id=session_id,
-        log_experiment=False  # Avoid MLflow logging issues
-        
+        log_experiment=log_experiment,
+        **setup_kwargs           #  forward everything from YAML
     )
     return exp
+
 
 def compare_and_select_model(exp):
     """
@@ -70,87 +79,8 @@ def compare_and_select_model(exp):
     tuple
         Best model and a DataFrame with model comparison results.
     """
-    print("Comparing models...")
+    logger.info("Comparing models...")
     best_model = exp.compare_models()
     model_results = exp.pull()
     return best_model, model_results
-
-def generate_visualizations(exp, best_model, output_dir):
-    """
-    Generate and save model evaluation plots using PyCaret.
-    
-    Parameters
-    ----------
-    exp : ClassificationExperiment
-        The PyCaret experiment.
-    best_model : object
-        The best performing model.
-    output_dir : str
-        Directory where plots will be saved.
-    """
-    plots = ['auc','threshold','pr', 'confusion_matrix', 'error','class_report', 'boundary','feature','learning', 'calibration','lift','ks','gain']
-    for plot in plots:
-        exp.plot_model(best_model, plot=plot, save=True)
-        print(f"{plot.capitalize()} plot saved")
-    
-    # Optionally plot feature importance if supported
-    try:
-        exp.plot_model(best_model, plot='feature', save=True)
-        print("Feature importance plot saved")
-    except Exception as e:
-        print("Feature importance plot not supported:", e)
-
-def evaluate_model(exp, best_model, output_dir):
-    """
-    Evaluate the best model on the test set and save predictions.
-    
-    Parameters
-    ----------
-    exp : ClassificationExperiment
-        The PyCaret experiment.
-    best_model : object
-        The selected best model.
-    output_dir : str
-        Directory to save test set predictions.
-        
-    Returns
-    -------
-    pandas.DataFrame
-        Predictions on the test set.
-    """
-    print("Evaluating model on test set...")
-    predictions = exp.predict_model(best_model)
-    predictions_file = os.path.join(output_dir, "test_predictions.csv")
-    predictions.to_csv(predictions_file, index=False)
-    print(f"Predictions saved to {predictions_file}")
-    return predictions
-
-
-
-def refine_and_save_models(exp, best_model, output_dir):
-    """
-    Refine the model using gradient boosting, ensemble it, and save the pipelines.
-    
-    Parameters
-    ----------
-    exp : ClassificationExperiment
-        The PyCaret experiment.
-    best_model : object
-        The best performing model.
-    output_dir : str
-        Directory where the model pipelines will be saved.
-    """
-    # Create, tune, and ensemble a Gradient Boosting Classifier (GBC)
-    print("Refining model with Gradient Boosting...")
-    gbc = exp.create_model('gbc', fold=30)
-    tuned_gbc = exp.tune_model(gbc, choose_better = True)
-    bagged_gbc = exp.ensemble_model(tuned_gbc, choose_better = True)
-    
-    model_dir = os.path.join(output_dir, "models")
-    os.makedirs(model_dir, exist_ok=True)
-    
-    best_model_path = os.path.join(model_dir, "best_model_pipeline")
-    exp.save_model(best_model, best_model_path)
-    print(f"Best model saved to {best_model_path}")
-    
 

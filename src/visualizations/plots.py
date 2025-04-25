@@ -8,6 +8,10 @@ and model evaluation (e.g., correlation heatmap, moving plot files).
 import os
 import matplotlib.pyplot as plt
 import pandas as pd
+import logging  # Import logging
+
+# Get logger for this module
+logger = logging.getLogger(__name__)
 
 def plot_correlation_heatmap(df, save_path="plots/Correlation_Heatmap.png"):
     """
@@ -36,45 +40,32 @@ def plot_correlation_heatmap(df, save_path="plots/Correlation_Heatmap.png"):
     os.makedirs(os.path.dirname(save_path) if os.path.dirname(save_path) else '.', exist_ok=True)
     plt.savefig(save_path)
     plt.close()
-    print(f"Correlation heatmap saved as {save_path}")
+    logger.info(f"Correlation heatmap saved as {save_path}")
 
-def move_plots(source_dir, dest_dir):
+
+def generate_visualizations(exp, best_model, plots):
     """
-    Move PNG plot files from a source directory to a destination directory.
+    Generate and save model evaluation plots using PyCaret.
     
     Parameters
     ----------
-    source_dir : str
-        Directory to search for .png files.
-    dest_dir : str
-        Directory where the plot files will be moved.
+    exp : ClassificationExperiment
+        The PyCaret experiment.
+    best_model : object
+        The best performing model.
+    output_dir : str
+        Directory where plots will be saved.
     """
-    if not os.path.exists(dest_dir):
-        os.makedirs(dest_dir)
-    plot_files = [f for f in os.listdir(source_dir) if f.endswith('.png')]
-    for file in plot_files:
-        source_path = os.path.join(source_dir, file)
-        dest_path = os.path.join(dest_dir, file)
-        os.rename(source_path, dest_path)
-        print(f"Moved {file} to {dest_dir}")
-
-
-def move_html(source_dir, dest_dir):
-    """
-    Move HTML files from a source directory to a destination directory.
+    for plot in plots:
+        try:  # Add try-except block for robustness
+            exp.plot_model(best_model, plot=plot, save=True)
+            logger.info(f"{plot.capitalize()} plot saved")
+        except Exception as e:
+            logger.warning(f"Could not generate or save {plot} plot: {e}")
     
-    Parameters
-    ----------
-    source_dir : str
-        Directory to search for .html files.
-    dest_dir : str
-        Directory where the plot files will be moved.
-    """
-    if not os.path.exists(dest_dir):
-        os.makedirs(dest_dir)
-    html_files = [f for f in os.listdir(source_dir) if f.endswith('.html')]
-    for file in html_files:
-        source_path = os.path.join(source_dir, file)
-        dest_path = os.path.join(dest_dir, file)
-        os.rename(source_path, dest_path)
-        print(f"Moved {file} to {dest_dir}")
+    # Optionally plot feature importance if supported
+    try:
+        exp.plot_model(best_model, plot='feature', save=True)
+        logger.info("Feature importance plot saved")
+    except Exception as e:
+        logger.warning(f"Feature importance plot not supported or failed: {e}")
