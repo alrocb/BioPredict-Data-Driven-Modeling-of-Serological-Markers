@@ -92,9 +92,9 @@ def main():
         # ---------------------------
         # 1. Data Conversion (Optional - uncomment if needed)
         # ---------------------------
-        # logger.info("Starting Data Conversion Process")
-        # num_converted = convert_xpt_to_csv(raw_dir, interim_dir)
-        # logger.info(f"Data Conversion Completed: {num_converted} files converted.")
+        logger.info("Starting Data Conversion Process")
+        num_converted = convert_xpt_to_csv(raw_dir, interim_dir)
+        logger.info(f"Data Conversion Completed: {num_converted} files converted.")
 
         # ---------------------------
         # 2. Data Merging
