@@ -45,6 +45,9 @@ logs.log
 !data/external/README.md
 !data/interim/README.md
 !data/processed/README.md
+/data
+/data/raw*
+!data/raw/README.md
 
 # Outputs
 /outputs/
