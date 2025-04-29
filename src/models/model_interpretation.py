@@ -81,11 +81,16 @@ def generate_shap_plots(exp, model, output_dir):
     output_dir : str
         Directory to save plots.
     """
-    logger.info("Generating SHAP plots using SHAP library")
+    logger.info("Preparing data for SHAP explainer...")
     # Make sure we're using the run-specific plots directory
     plots_dir = os.path.join(output_dir, "plots")
     os.makedirs(plots_dir, exist_ok=True)
-    
+        # Get the SHAP logger
+    shap_logger = logging.getLogger('shap')
+    # Store original level
+    original_level = shap_logger.level
+    # Set level to WARNING to suppress INFO messages
+    shap_logger.setLevel(logging.WARNING)
     try:
         # Get the estimator from the pipeline
         estimator = model
@@ -101,6 +106,7 @@ def generate_shap_plots(exp, model, output_dir):
         
         # Tree explainer for tree-based models, Kernel explainer as fallback
         try:
+            logger.warning("Using KernelExplainer for SHAP - this can be slow.")
             explainer = shap.TreeExplainer(estimator)
             shap_values = explainer.shap_values(X_sample)
             logger.info("Using TreeExplainer for SHAP")
@@ -140,12 +146,17 @@ def generate_shap_plots(exp, model, output_dir):
         return True
         
     except Exception as e:
-        logger.error(f"Error generating SHAP plots: {str(e)}")
+        logger.error(f"Error generating SHAP plots: {str(e)}", exc_info=True)
         return False
+    finally:
+        # Restore original logging level for SHAP logger
+        shap_logger.setLevel(original_level)
+        logger.info("Restored SHAP logger level.")
 
-def generate_all_interpretation_plots(exp, model, output_dir):
+
+def generate_all_interpretation_plots(exp, model, config, output_dir):
     """
-    Generate all types of interpretation plots for the given model.
+    Generate specified interpretation plots for the given model based on config.
     
     Parameters
     ----------
@@ -153,37 +164,46 @@ def generate_all_interpretation_plots(exp, model, output_dir):
         The PyCaret experiment.
     model : object
         The trained model to interpret.
+    config : dict
+        The configuration dictionary (specifically needs config['modeling']['interpretation_plots']).
     output_dir : str
-        Directory to save plots.
+        Base directory for the run to save plots.
     """
     plots_dir = os.path.join(output_dir, "interpretability")
     os.makedirs(plots_dir, exist_ok=True)
     
+    # Get the list of desired plots from config, default to empty list
+    desired_plots = config.get('modeling', {}).get('interpretation_plots', [])
+    logger.info(f"Generating interpretation plots based on config: {desired_plots}")
     
-    # Try direct SHAP implementation first (most robust)
-    logger.info("Generating SHAP plots...")
-    shap_success = generate_shap_plots(exp, model, output_dir)
+    if 'shap' in desired_plots:
+        logger.info("Generating SHAP plots...")
+        generate_shap_plots(exp, model, output_dir) # Pass base output_dir
     
-    # Generate PyCaret plots that work with most models
-    logger.info("Generating Partial Dependence plots...")
-    interpret_model(exp, model, plot_type='pdp', save=True, output_dir=plots_dir)
+    if 'pdp' in desired_plots:
+        logger.info("Generating Partial Dependence plots...")
+        interpret_model(exp, model, plot_type='pdp', save=True, output_dir=plots_dir)
     
-    logger.info("Generating Morris Sensitivity Analysis...")
-    interpret_model(exp, model, plot_type='msa', save=True, output_dir=plots_dir)
+    if 'msa' in desired_plots:
+        logger.info("Generating Morris Sensitivity Analysis...")
+        interpret_model(exp, model, plot_type='msa', save=True, output_dir=plots_dir)
     
-    logger.info("Generating Permutation Feature Importance...")
-    interpret_model(exp, model, plot_type='pfi', save=True, output_dir=plots_dir)
+    if 'pfi' in desired_plots:
+        logger.info("Generating Permutation Feature Importance...")
+        interpret_model(exp, model, plot_type='pfi', save=True, output_dir=plots_dir)
     
-    # Try correlation plots - these might fail for non-tree models
-    try:
+    if 'correlation' in desired_plots:
         logger.info("Generating correlation plots...")
-        # Get top 3 features
-        features = exp.get_config('X_train').columns.tolist()[:3]
-        for feature in features:
-            interpret_model(exp, model, plot_type='correlation', feature=feature, 
-                          save=True, output_dir=plots_dir)
-    except Exception:
-        logger.warning("Correlation plots could not be generated (only works with tree-based models)")
+        # Get top 3 features (or fewer if not available)
+        num_features = min(3, len(exp.get_config('X_train').columns))
+        features = exp.get_config('X_train').columns.tolist()[:num_features]
+        if not features:
+             logger.warning("No features available for correlation plots.")
+        else:
+            for feature in features:
+                interpret_model(exp, model, plot_type='correlation', feature=feature,
+                              save=True, output_dir=plots_dir)
+
 
 def check_model_fairness(exp, model, sensitive_features, output_dir):
     """

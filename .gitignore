@@ -39,26 +39,39 @@ logs.log
 *.sqlite3
 
 # Data
-/data/external/*
-/data/interim/*
-/data/processed/*
+# Ignore all content within data subdirectories, but keep the directories
+# Add an empty .gitkeep file in each directory to force Git to track it.
+/data/external/**
+!/data/external/.gitkeep
 !data/external/README.md
+/data/interim/**
+!/data/interim/.gitkeep
 !data/interim/README.md
+/data/processed/**
+!/data/processed/.gitkeep
 !data/processed/README.md
-/data
-/data/raw*
+/data/raw/**
+!/data/raw/.gitkeep
 !data/raw/README.md
+/data/extra/**
+!/data/extra/.gitkeep
+!data/extra/README.md
 
 # Outputs
-/outputs/
+# Ignore all content within outputs, but keep the directory
+/outputs/**
+!/outputs/.gitkeep
 
+# DevContainer
 
-# MLflow
-mlruns/
+.devcontainer/
+devcontainer.json
 
 # Jupyter Notebook
 .ipynb_checkpoints
-/notebooks/
+# Ignore all content within notebooks, but keep the directory
+/notebooks/**
+!/notebooks/.gitkeep
 .ipynb
 
 # OS generated files

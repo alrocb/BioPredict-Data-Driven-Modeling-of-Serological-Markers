@@ -12,63 +12,83 @@ from pycaret.classification import ClassificationExperiment
 # Get logger for this module
 logger = logging.getLogger(__name__)
 
-
-def refine_and_save_models(exp, best_model, output_dir):
+# Rename and modify the function to accept the model to refine
+def tune_model(exp, model_to_refine, models_dir):
     """
-    Refine the model using gradient boosting, ensemble it, and save the pipelines.
+    Tunes the hyperparameters of the provided model, creates a Bagging ensemble
+    of the tuned model, saves the final ensembled pipeline, and returns the
+    ensembled model object.
+
+    Parameters
+    ----------
+    exp : ClassificationExperiment
+        The PyCaret experiment.
+    model_to_refine : object
+        The model object (e.g., the initial best model) to tune and ensemble.
+    models_dir : str
+        Directory to save the final model pipeline.
+
+    Returns
+    -------
+    object
+        The final ensembled model object or None if failed.
+    """
+    try:
+        model_name = type(model_to_refine).__name__
+        logger.info(f"Tuning hyperparameters for model: {model_name}...")
+        # Tune the passed model
+        tuned_model = exp.tune_model(model_to_refine, choose_better=True) # Keep the better one
+
+        # logger.info(f"Ensembling tuned model ({model_name}) using Bagging...")
+        # Ensemble the tuned model
+        #ensembled_model = exp.ensemble_model(tuned_model, choose_better=True) # Keep the better one
+
+        # Ensure models directory exists
+        os.makedirs(models_dir, exist_ok=True)
+
+        # Define path for the final model
+        final_model_filename = "best_model.pkl"
+        final_model_path = os.path.join(models_dir, final_model_filename)
+
+        # Save the final ensembled model pipeline
+        logger.info(f"Saving final tuned and ensembled model pipeline to {final_model_path}")
+        exp.save_model(tuned_model, final_model_path)
+
+        return tuned_model # Return the final model object
+
+    except Exception as e:
+        logger.error(f"Error during model tuning and ensembling: {e}", exc_info=True)
+        return None # Return None if refinement fails
+
+
+def evaluate_model(exp, model, output_dir):
+    """
+    Evaluate the given model on the test set and save predictions.
     
     Parameters
     ----------
     exp : ClassificationExperiment
         The PyCaret experiment.
-    best_model : object
-        The best performing model.
-    output_dir : str
-        Directory where the model pipelines will be saved.
-    """
-    # Create, tune, and ensemble a Gradient Boosting Classifier (GBC)
-    logger.info("Refining model with Gradient Boosting...")
-    gbc = exp.create_model('gbc', fold=30)
-    tuned_gbc = exp.tune_model(gbc, choose_better = True)
-    bagged_gbc = exp.ensemble_model(tuned_gbc, choose_better = True)
-    
-    model_dir = os.path.join(output_dir, "models")
-    os.makedirs(model_dir, exist_ok=True)
-    
-    best_model_path = os.path.join(model_dir, "best_model_pipeline")
-    exp.save_model(best_model, best_model_path)
-    logger.info(f"Best model saved to {best_model_path}")
-    
-
-
-
-
-
-def evaluate_model(exp, best_model, output_dir):
-    """
-    Evaluate the best model on the test set and save predictions.
-    
-    Parameters
-    ----------
-    exp : ClassificationExperiment
-        The PyCaret experiment.
-    best_model : object
-        The selected best model.
+    model : object
+        The model to evaluate (e.g., initial best or refined).
     output_dir : str
         Directory to save test set predictions.
         
     Returns
     -------
-    pandas.DataFrame
-        Predictions on the test set.
+    pandas.DataFrame or None
+        Predictions on the test set, or None if evaluation failed.
     """
-    logger.info("Evaluating model on test set...")
-    
-    # Make sure to save predictions to the run directory
-    predictions = exp.predict_model(best_model)
-    predictions_file = os.path.join(output_dir, "test_predictions.csv")
-    predictions.to_csv(predictions_file, index=False)
-    logger.info(f"Predictions saved to {predictions_file}")
-    return predictions
+    logger.info(f"Evaluating model on test set: {model}")
+    try:
+        predictions = exp.predict_model(model) # Use the passed model
+        # Save predictions
+        predictions_path = os.path.join(output_dir, "test_predictions.csv")
+        predictions.to_csv(predictions_path, index=False)
+        logger.info(f"Test set predictions saved to {predictions_path}")
+        return predictions
+    except Exception as e:
+        logger.error(f"Error during model evaluation: {e}", exc_info=True)
+        return None
 
 

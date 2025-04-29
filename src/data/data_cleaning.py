@@ -224,20 +224,3 @@ def clean_data(input_path, output_path, config):
 
     return df_cleaned
 
-def main():
-    """Main function to execute the data cleaning process using config."""
-    # Load configuration
-    config = load_config()  # Load the main config
-
-    # Get paths from config
-    paths_config = config['paths']
-    input_path = paths_config['merged_file']
-    output_path = paths_config['cleaned_file']
-
-    logger.info("Starting data cleaning process")
-    # Pass the whole config to clean_data
-    clean_data(input_path, output_path, config)
-    logger.info("Data cleaning completed successfully")
-
-if __name__ == "__main__":
-    main()

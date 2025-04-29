@@ -142,3 +142,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - NHANES (National Health and Nutrition Examination Survey)
 - MLflow
 - All contributors who have helped shape this project
+
+*FOR GRIFOLS EMPLOYEES: uv sync --trusted-host github.com --trusted-host pypi.org --trusted-host files.pythonhosted.org*

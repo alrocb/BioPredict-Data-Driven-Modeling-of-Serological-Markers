@@ -92,9 +92,9 @@ def main():
         # ---------------------------
         # 1. Data Conversion (Optional - uncomment if needed)
         # ---------------------------
-        logger.info("Starting Data Conversion Process")
-        num_converted = convert_xpt_to_csv(raw_dir, interim_dir)
-        logger.info(f"Data Conversion Completed: {num_converted} files converted.")
+        # logger.info("Starting Data Conversion Process")
+        # num_converted = convert_xpt_to_csv(raw_dir, interim_dir)
+        # logger.info(f"Data Conversion Completed: {num_converted} files converted.")
 
         # ---------------------------
         # 2. Data Merging
@@ -117,7 +117,7 @@ def main():
         logger.info("Starting Data Loading and Preprocessing for Analysis")
         df = load_data(cleaned_file)
 
-        logger.info("Checking for any remaining missing values after cleaning (should be minimal/none)")
+        logger.info("Impute missing values with corresponding mapping according to config file")
         df = impute_missing_values(df, data_cleaning_config['imputation_mapping'])
 
         logger.info("Renaming and Selecting Features based on config")
@@ -170,6 +170,7 @@ def main():
         logger.info(f"Best model selected: {best_model}")
         logger.info("Model comparison results:")
         logger.info(model_results.to_string())
+        
 
         # ---------------------------
         # 6. Evaluation
@@ -184,26 +185,32 @@ def main():
         # ---------------------------
         # 7. Model Interpretability
         # ---------------------------
-        logger.info("Starting Model Interpretability Analysis")
+        run_interpretation = modeling_config.get('run_interpretation', True) # Default to True if not specified
 
-        generate_all_interpretation_plots(exp, best_model, run_dir)
+        if run_interpretation:
+            logger.info("Starting Model Interpretability Analysis")
 
-        sensitive_features = modeling_config['sensitive_features']
-        valid_sensitive_features = [f for f in sensitive_features if f in modeling_df.columns]
-        if len(valid_sensitive_features) < len(sensitive_features):
-            missing_sens_features = set(sensitive_features) - set(valid_sensitive_features)
-            logger.warning(f"Some sensitive features not found in modeling data: {missing_sens_features}")
-        if valid_sensitive_features:
-            logger.info(f"Checking model fairness for features: {valid_sensitive_features}")
-            check_model_fairness(exp, best_model, valid_sensitive_features, run_dir)
+            # Pass the whole config dictionary here
+            generate_all_interpretation_plots(exp, best_model, config, run_dir)
+
+            sensitive_features = modeling_config['sensitive_features']
+            valid_sensitive_features = [f for f in sensitive_features if f in modeling_df.columns]
+            if len(valid_sensitive_features) < len(sensitive_features):
+                missing_sens_features = set(sensitive_features) - set(valid_sensitive_features)
+                logger.warning(f"Some sensitive features not found in modeling data: {missing_sens_features}")
+            if valid_sensitive_features:
+                logger.info(f"Checking model fairness for features: {valid_sensitive_features}")
+                check_model_fairness(exp, best_model, valid_sensitive_features, run_dir)
+            else:
+                logger.warning("Skipping fairness check as no valid sensitive features were found in the data.")
+
+            logger.info("Model Interpretability Analysis Completed.")
+            move_html(os.getcwd(), interpretability_dir)
         else:
-            logger.warning("Skipping fairness check as no valid sensitive features were found in the data.")
-
-        logger.info("Model Interpretability Analysis Completed.")
-        move_html(os.getcwd(), interpretability_dir)
+            logger.info("Skipping Model Interpretability Analysis as per configuration.")
 
         # ---------------------------
-        # 8. Visualization 
+        # 8. Visualization
         # ---------------------------
         logger.info("Generating PyCaret model evaluation plots...")
         # Get the list of plots from the config

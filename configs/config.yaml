@@ -38,13 +38,12 @@ data_cleaning:
     'HIQ031A': 99
     'BMXBMI': 0
     'BMXWAIST': 0
-    'LBXHBS': 0 # Target column imputation (if needed before dropping NaNs)
-
+    'LBXHBS': 0 
 data_preprocessing:
   column_mapping:
     "DMDBORN4": "Country_of_Birth"
     "INDFMPIR": "Income_to_Poverty_Ratio"
-    "RIAGENDR": "Gender" # Renamed to Sex later? Check fairness features
+    "RIAGENDR": "Gender" 
     "RIDAGEYR": "Age"
     "DMDHRBR4": "Household_Reference_Country"
     "DMDEDUC2": "Education_Level"
@@ -71,9 +70,16 @@ modeling:
     1.0: 1 # Map original positive class (1.0) to PyCaret positive (1)
     2.0: 0 # Map original negative class (2.0) to PyCaret negative (0)
   sensitive_features: # Features used for fairness check (use renamed versions)
-    - 'Gender' # Check if this should be 'Sex' based on final renaming/usage
+    - 'Gender' # Check if this should be 'Sex' too, depending on the renaming
     - 'Race_Ethnicity'
     - 'Age'
+  run_interpretation: true # <-- ADD THIS FLAG (set to true or false)
+  interpretation_plots: # <-- ADD THIS LIST
+    - 'shap' # Generate SHAP summary and importance plots
+    - 'pdp'  # Generate Partial Dependence Plots
+    - 'msa'  # Generate Morris Sensitivity Analysis
+    - 'pfi'  # Generate Permutation Feature Importance
+    - 'correlation' # Generate Correlation plots 
   setup_params:
     fix_imbalance: true          # turn SMOTE on/off here
     fix_imbalance_method: smote  # smote | smotenc | adasyn | borderline_smote …

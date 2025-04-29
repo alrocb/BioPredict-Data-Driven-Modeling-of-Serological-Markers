@@ -35,6 +35,11 @@ def convert_xpt_to_csv(input_folder, output_folder):
     output_folder : str
         Path to the folder where .csv files will be saved
     """
+    # Check if the input folder exists
+    if not os.path.exists(input_folder):
+        logger.warning(f"Input directory not found: {input_folder}. Skipping conversion.")
+        return 0 # Return 0 files processed
+
     # Create the output folder if it doesn't exist
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)

@@ -6,7 +6,6 @@ It also integrates MLflow for tracking experiments.
 """
 
 import os
-import mlflow
 import pandas as pd
 from pycaret.classification import ClassificationExperiment
 from sklearn.metrics import classification_report
