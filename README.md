@@ -1,6 +1,6 @@
 # BioPredict - Data-Driven Modeling of Serological Markers using NHANES Data
 
-[![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE) 
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) 
 
@@ -58,7 +58,7 @@ BioPredict-Data-Driven-Modeling-of-Serological-Markers/
 
 ### Prerequisites
 
--   Python (version specified in `requirements.txt`, likely 3.8+)
+-   Python (version specified in `requirements.txt`, likely 3.11+)
 -   Git
 
 ### Installation

@@ -4,3 +4,5 @@ pyyaml==6.0.2
 pycaret==3.3.2
 pycaret[analysis]
 interpret-community==0.32.0
+
+# Python should be >=3.9 and <=3.11
