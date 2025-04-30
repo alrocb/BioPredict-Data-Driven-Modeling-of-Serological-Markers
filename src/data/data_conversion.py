@@ -52,8 +52,8 @@ def convert_xpt_to_csv(input_folder, output_folder):
     for filename in os.listdir(input_folder):
         if filename.lower().endswith('.xpt'):
             xpt_file = os.path.join(input_folder, filename)
-            logger.info(f"Processing {xpt_file}")
-            
+            logger.debug(f"Processing {xpt_file}")
+
             try:
                 # Read the .xpt file into a DataFrame
                 df = pd.read_sas(xpt_file, format='xport')
@@ -64,7 +64,7 @@ def convert_xpt_to_csv(input_folder, output_folder):
                 
                 # Save the DataFrame to CSV
                 df.to_csv(csv_file, index=False)
-                logger.info(f"Saved to {csv_file}")
+                logger.debug(f"Saved to {csv_file}")
                 files_processed += 1
                 
             except Exception as e:

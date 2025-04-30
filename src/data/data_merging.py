@@ -44,7 +44,7 @@ def read_csv_file(filepath, key=PRIMARY_KEY):
         if key not in df.columns:
             logger.warning(f"Primary key '{key}' not found in {os.path.basename(filepath)}. Skipping.")
             return None
-        logger.info(f"Loaded {os.path.basename(filepath)} with shape {df.shape}")
+        logger.debug(f"Loaded {os.path.basename(filepath)} with shape {df.shape}")
         return df
     except Exception as e:
         logger.error(f"Error reading {os.path.basename(filepath)}: {e}")
@@ -69,7 +69,7 @@ def merge_dataframes_on_key(dataframes, key=PRIMARY_KEY):
     merged_df = dataframes[0]
     for df in dataframes[1:]:
         merged_df = pd.merge(merged_df, df, on=key, how="inner")
-        logger.info(f"Merged shape is now {merged_df.shape}")
+        logger.debug(f"Merged shape is now {merged_df.shape}")
     return merged_df
 
 def merge_nhanes_data(input_dir, output_file, key=PRIMARY_KEY):
@@ -95,7 +95,7 @@ def merge_nhanes_data(input_dir, output_file, key=PRIMARY_KEY):
     
     dataframes = []
     for file_path in csv_files:
-        logger.info(f"Processing file: {os.path.basename(file_path)}")
+        logger.debug(f"Processing file: {os.path.basename(file_path)}")
         df = read_csv_file(file_path, key)
         if df is not None:
             dataframes.append(df)
