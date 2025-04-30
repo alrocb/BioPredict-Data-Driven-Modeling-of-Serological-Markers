@@ -1,0 +1,334 @@
+2025-04-29 16:29:45 - root - INFO - Logging configured using dictConfig.
+2025-04-29 16:29:45 - root - INFO - Logging to file: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/analysis.txt
+2025-04-29 16:29:45 - __main__ - INFO - Analysis started at 2025-04-29 16:29:45
+2025-04-29 16:29:45 - __main__ - INFO - Results will be saved in: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945
+2025-04-29 16:29:45 - __main__ - INFO - Using configuration:
+2025-04-29 16:29:45 - __main__ - INFO - data_cleaning:
+2025-04-29 16:29:45 - __main__ - INFO -   columns_to_drop:
+2025-04-29 16:29:45 - __main__ - INFO -   - SEQN
+2025-04-29 16:29:45 - __main__ - INFO -   imputation_mapping:
+2025-04-29 16:29:45 - __main__ - INFO -     Age: 0
+2025-04-29 16:29:45 - __main__ - INFO -     Alcohol_Frequency_12m: 999
+2025-04-29 16:29:45 - __main__ - INFO -     Body_Mass_Index: 0
+2025-04-29 16:29:45 - __main__ - INFO -     Country_of_Birth: 99
+2025-04-29 16:29:45 - __main__ - INFO -     Dental_Implant: 0
+2025-04-29 16:29:45 - __main__ - INFO -     Education_Level: 9
+2025-04-29 16:29:45 - __main__ - INFO -     Family_Income: 99
+2025-04-29 16:29:45 - __main__ - INFO -     Gender: 0
+2025-04-29 16:29:45 - __main__ - INFO -     HBsAg: 0
+2025-04-29 16:29:45 - __main__ - INFO -     HepatitisB_Vaccinated: 9
+2025-04-29 16:29:45 - __main__ - INFO -     Household_Reference_Country: 99
+2025-04-29 16:29:45 - __main__ - INFO -     Household_Size: 0
+2025-04-29 16:29:45 - __main__ - INFO -     Income_to_Poverty_Ratio: 0
+2025-04-29 16:29:45 - __main__ - INFO -     Injected_Drugs_Ever: 9
+2025-04-29 16:29:45 - __main__ - INFO -     Marital_Status: 99
+2025-04-29 16:29:45 - __main__ - INFO -     Private_Insurance: 99
+2025-04-29 16:29:45 - __main__ - INFO -     Race_Ethnicity: 0
+2025-04-29 16:29:45 - __main__ - INFO -     Unprotected_Sex_12m: 9
+2025-04-29 16:29:45 - __main__ - INFO -     Waist_Circumference: 0
+2025-04-29 16:29:45 - __main__ - INFO -   missing_threshold: 95
+2025-04-29 16:29:45 - __main__ - INFO -   target_column_raw: LBXHBS
+2025-04-29 16:29:45 - __main__ - INFO -   variance_threshold: 0.01
+2025-04-29 16:29:45 - __main__ - INFO - data_preprocessing:
+2025-04-29 16:29:45 - __main__ - INFO -   column_mapping:
+2025-04-29 16:29:45 - __main__ - INFO -     ALQ120Q: Alcohol_Frequency_12m
+2025-04-29 16:29:45 - __main__ - INFO -     BMXBMI: Body_Mass_Index
+2025-04-29 16:29:45 - __main__ - INFO -     BMXWAIST: Waist_Circumference
+2025-04-29 16:29:45 - __main__ - INFO -     DMDBORN4: Country_of_Birth
+2025-04-29 16:29:45 - __main__ - INFO -     DMDEDUC2: Education_Level
+2025-04-29 16:29:45 - __main__ - INFO -     DMDHHSIZ: Household_Size
+2025-04-29 16:29:45 - __main__ - INFO -     DMDHRBR4: Household_Reference_Country
+2025-04-29 16:29:45 - __main__ - INFO -     DMDMARTL: Marital_Status
+2025-04-29 16:29:45 - __main__ - INFO -     DUQ370: Injected_Drugs_Ever
+2025-04-29 16:29:45 - __main__ - INFO -     HIQ031A: Private_Insurance
+2025-04-29 16:29:45 - __main__ - INFO -     IMQ020: HepatitisB_Vaccinated
+2025-04-29 16:29:45 - __main__ - INFO -     INDFMIN2: Family_Income
+2025-04-29 16:29:45 - __main__ - INFO -     INDFMPIR: Income_to_Poverty_Ratio
+2025-04-29 16:29:45 - __main__ - INFO -     LBXHBS: HBsAg
+2025-04-29 16:29:45 - __main__ - INFO -     OHXIMP: Dental_Implant
+2025-04-29 16:29:45 - __main__ - INFO -     RIAGENDR: Gender
+2025-04-29 16:29:45 - __main__ - INFO -     RIDAGEYR: Age
+2025-04-29 16:29:45 - __main__ - INFO -     RIDRETH1: Race_Ethnicity
+2025-04-29 16:29:45 - __main__ - INFO -     SXQ251: Unprotected_Sex_12m
+2025-04-29 16:29:45 - __main__ - INFO - logging:
+2025-04-29 16:29:45 - __main__ - INFO -   date_format: '%Y-%m-%d %H:%M:%S'
+2025-04-29 16:29:45 - __main__ - INFO -   format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+2025-04-29 16:29:45 - __main__ - INFO -   level: INFO
+2025-04-29 16:29:45 - __main__ - INFO -   log_file: outputs/analysis.log
+2025-04-29 16:29:45 - __main__ - INFO - modeling:
+2025-04-29 16:29:45 - __main__ - INFO -   interpretation_plots:
+2025-04-29 16:29:45 - __main__ - INFO -   - shap
+2025-04-29 16:29:45 - __main__ - INFO -   - pdp
+2025-04-29 16:29:45 - __main__ - INFO -   - msa
+2025-04-29 16:29:45 - __main__ - INFO -   - pfi
+2025-04-29 16:29:45 - __main__ - INFO -   - correlation
+2025-04-29 16:29:45 - __main__ - INFO -   log_experiment: false
+2025-04-29 16:29:45 - __main__ - INFO -   run_interpretation: true
+2025-04-29 16:29:45 - __main__ - INFO -   sensitive_features:
+2025-04-29 16:29:45 - __main__ - INFO -   - Gender
+2025-04-29 16:29:45 - __main__ - INFO -   - Race_Ethnicity
+2025-04-29 16:29:45 - __main__ - INFO -   - Age
+2025-04-29 16:29:45 - __main__ - INFO -   session_id: 123
+2025-04-29 16:29:45 - __main__ - INFO -   setup_params:
+2025-04-29 16:29:45 - __main__ - INFO -     fix_imbalance: true
+2025-04-29 16:29:45 - __main__ - INFO -     fix_imbalance_method: smote
+2025-04-29 16:29:45 - __main__ - INFO -   target_column: HBsAg
+2025-04-29 16:29:45 - __main__ - INFO -   target_mapping:
+2025-04-29 16:29:45 - __main__ - INFO -     1.0: 1
+2025-04-29 16:29:45 - __main__ - INFO -     2.0: 0
+2025-04-29 16:29:45 - __main__ - INFO -   train_size: 0.7
+2025-04-29 16:29:45 - __main__ - INFO - paths:
+2025-04-29 16:29:45 - __main__ - INFO -   cleaned_file: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/processed/merged_cleaned.csv
+2025-04-29 16:29:45 - __main__ - INFO -   extra_data: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/extra
+2025-04-29 16:29:45 - __main__ - INFO -   interim_data: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/interim
+2025-04-29 16:29:45 - __main__ - INFO -   interpretability_dir: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/interpretability
+2025-04-29 16:29:45 - __main__ - INFO -   log_file_template: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/analysis.txt
+2025-04-29 16:29:45 - __main__ - INFO -   merged_file: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/extra/merged.csv
+2025-04-29 16:29:45 - __main__ - INFO -   models_dir: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/models
+2025-04-29 16:29:45 - __main__ - INFO -   output: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs
+2025-04-29 16:29:45 - __main__ - INFO -   plots_dir: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots
+2025-04-29 16:29:45 - __main__ - INFO -   processed_data: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/processed
+2025-04-29 16:29:45 - __main__ - INFO -   project_root: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers
+2025-04-29 16:29:45 - __main__ - INFO -   raw_data: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/raw
+2025-04-29 16:29:45 - __main__ - INFO -   run_dir: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945
+2025-04-29 16:29:45 - __main__ - INFO - visualizations:
+2025-04-29 16:29:45 - __main__ - INFO -   pycaret_plots:
+2025-04-29 16:29:45 - __main__ - INFO -   - auc
+2025-04-29 16:29:45 - __main__ - INFO -   - confusion_matrix
+2025-04-29 16:29:45 - __main__ - INFO -   - feature
+2025-04-29 16:29:45 - __main__ - INFO -   - threshold
+2025-04-29 16:29:45 - __main__ - INFO -   - pr
+2025-04-29 16:29:45 - __main__ - INFO -   - error
+2025-04-29 16:29:45 - __main__ - INFO -   - class_report
+2025-04-29 16:29:45 - __main__ - INFO -   - boundary
+2025-04-29 16:29:45 - __main__ - INFO -   - learning
+2025-04-29 16:29:45 - __main__ - INFO -   - calibration
+2025-04-29 16:29:45 - __main__ - INFO -   - lift
+2025-04-29 16:29:45 - __main__ - INFO -   - ks
+2025-04-29 16:29:45 - __main__ - INFO -   - gain
+2025-04-29 16:29:45 - __main__ - INFO - ================================================================================
+2025-04-29 16:29:45 - __main__ - INFO - Starting Data Merging Process
+2025-04-29 16:29:45 - data.data_merging - INFO - Looking for CSV files in c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/interim
+2025-04-29 16:29:45 - data.data_merging - INFO - Processing file: demographic.csv
+2025-04-29 16:29:45 - data.data_merging - INFO - Loaded demographic.csv with shape (10175, 47)
+2025-04-29 16:29:45 - data.data_merging - INFO - Processing file: diet.csv
+2025-04-29 16:29:45 - data.data_merging - INFO - Loaded diet.csv with shape (9813, 168)
+2025-04-29 16:29:45 - data.data_merging - INFO - Processing file: examination.csv
+2025-04-29 16:29:45 - data.data_merging - INFO - Loaded examination.csv with shape (9813, 224)
+2025-04-29 16:29:45 - data.data_merging - INFO - Processing file: labs.csv
+2025-04-29 16:29:45 - data.data_merging - INFO - Loaded labs.csv with shape (9813, 424)
+2025-04-29 16:29:45 - data.data_merging - INFO - Processing file: medications.csv
+2025-04-29 16:29:45 - data.data_merging - ERROR - Error reading medications.csv: 'utf-8' codec can't decode byte 0xf6 in position 239072: invalid start byte
+2025-04-29 16:29:45 - data.data_merging - INFO - Processing file: questionnaire.csv
+2025-04-29 16:29:45 - data.data_merging - INFO - Loaded questionnaire.csv with shape (10175, 953)
+2025-04-29 16:29:45 - data.data_merging - INFO - Merged shape is now (9813, 214)
+2025-04-29 16:29:45 - data.data_merging - INFO - Merged shape is now (9813, 437)
+2025-04-29 16:29:45 - data.data_merging - INFO - Merged shape is now (9813, 860)
+2025-04-29 16:29:46 - data.data_merging - INFO - Merged shape is now (9813, 1812)
+2025-04-29 16:29:50 - data.data_merging - INFO - Merged data saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/extra/merged.csv
+2025-04-29 16:29:50 - __main__ - INFO - Data Merging Completed.
+2025-04-29 16:29:50 - __main__ - INFO - Loading merged data from c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/extra/merged.csv
+2025-04-29 16:29:51 - __main__ - INFO - Loaded merged data with shape: (9813, 1812)
+2025-04-29 16:29:51 - __main__ - INFO - Dropped 1552 rows with missing raw target ('LBXHBS'). Shape is now: (8261, 1812)
+2025-04-29 16:29:51 - data.data_cleaning - INFO - Dropping specified columns: ['SEQN']
+2025-04-29 16:29:51 - __main__ - INFO - Data shape after dropping specified columns: (8261, 1811)
+2025-04-29 16:29:51 - __main__ - INFO - Renaming and Selecting Features based on config
+2025-04-29 16:29:51 - utils.info_renamedata - INFO - Renaming and selecting columns based on configuration...
+2025-04-29 16:29:51 - utils.info_renamedata - INFO - Selected 19 columns and renamed them.
+2025-04-29 16:29:51 - __main__ - INFO - Data shape after renaming and selection: (8261, 19)
+2025-04-29 16:29:51 - __main__ - INFO - Columns remaining: ['Country_of_Birth', 'Income_to_Poverty_Ratio', 'Gender', 'Age', 'Household_Reference_Country', 'Education_Level', 'Marital_Status', 'Household_Size', 'Family_Income', 'Race_Ethnicity', 'Injected_Drugs_Ever', 'HepatitisB_Vaccinated', 'Alcohol_Frequency_12m', 'Dental_Implant', 'Unprotected_Sex_12m', 'Private_Insurance', 'Body_Mass_Index', 'Waist_Circumference', 'HBsAg']
+2025-04-29 16:29:51 - __main__ - INFO - Imputing missing values using mapping (ensure mapping uses RENAMED columns)
+2025-04-29 16:29:51 - data.data_cleaning - INFO - Imputing missing values based on configuration mapping.
+2025-04-29 16:29:51 - data.data_cleaning - INFO - Imputed missing values in 12 columns based on mapping.
+2025-04-29 16:29:51 - __main__ - INFO - Imputation completed. No missing values remaining before high-missing/low-variance checks.
+2025-04-29 16:29:51 - __main__ - INFO - Applying further cleaning: Removing high-missing and low-variance columns
+2025-04-29 16:29:51 - data.data_cleaning - INFO - Removing 0 columns with more than 95% missing values
+2025-04-29 16:29:51 - __main__ - INFO - Data shape after removing high-missing columns: (8261, 19)
+2025-04-29 16:29:51 - data.data_cleaning - INFO - Removing 0 low-variance features
+2025-04-29 16:29:51 - __main__ - INFO - Data shape after removing low-variance features: (8261, 19)
+2025-04-29 16:29:51 - __main__ - INFO - Final Processed Data Info:
+2025-04-29 16:29:51 - __main__ - INFO - <class 'pandas.core.frame.DataFrame'>
+2025-04-29 16:29:51 - __main__ - INFO - Index: 8261 entries, 0 to 9811
+2025-04-29 16:29:51 - __main__ - INFO - Data columns (total 19 columns):
+2025-04-29 16:29:51 - __main__ - INFO -  #   Column                       Non-Null Count  Dtype  
+2025-04-29 16:29:51 - __main__ - INFO - ---  ------                       --------------  -----  
+2025-04-29 16:29:51 - __main__ - INFO -  0   Country_of_Birth             8261 non-null   int64  
+2025-04-29 16:29:51 - __main__ - INFO -  1   Income_to_Poverty_Ratio      8261 non-null   float64
+2025-04-29 16:29:51 - __main__ - INFO -  2   Gender                       8261 non-null   int64  
+2025-04-29 16:29:51 - __main__ - INFO -  3   Age                          8261 non-null   int64  
+2025-04-29 16:29:51 - __main__ - INFO -  4   Household_Reference_Country  8261 non-null   float64
+2025-04-29 16:29:51 - __main__ - INFO -  5   Education_Level              8261 non-null   float64
+2025-04-29 16:29:51 - __main__ - INFO -  6   Marital_Status               8261 non-null   float64
+2025-04-29 16:29:51 - __main__ - INFO -  7   Household_Size               8261 non-null   int64  
+2025-04-29 16:29:51 - __main__ - INFO -  8   Family_Income                8261 non-null   float64
+2025-04-29 16:29:51 - __main__ - INFO -  9   Race_Ethnicity               8261 non-null   int64  
+2025-04-29 16:29:51 - __main__ - INFO -  10  Injected_Drugs_Ever          8261 non-null   float64
+2025-04-29 16:29:51 - __main__ - INFO -  11  HepatitisB_Vaccinated        8261 non-null   int64  
+2025-04-29 16:29:51 - __main__ - INFO -  12  Alcohol_Frequency_12m        8261 non-null   float64
+2025-04-29 16:29:51 - __main__ - INFO -  13  Dental_Implant               8261 non-null   float64
+2025-04-29 16:29:51 - __main__ - INFO -  14  Unprotected_Sex_12m          8261 non-null   float64
+2025-04-29 16:29:51 - __main__ - INFO -  15  Private_Insurance            8261 non-null   float64
+2025-04-29 16:29:51 - __main__ - INFO -  16  Body_Mass_Index              8261 non-null   float64
+2025-04-29 16:29:51 - __main__ - INFO -  17  Waist_Circumference          8261 non-null   float64
+2025-04-29 16:29:51 - __main__ - INFO -  18  HBsAg                        8261 non-null   float64
+2025-04-29 16:29:51 - __main__ - INFO - dtypes: float64(13), int64(6)
+2025-04-29 16:29:51 - __main__ - INFO - memory usage: 1.3 MB
+2025-04-29 16:29:51 - __main__ - INFO - Percentage of Missing Values (should be 0%):
+2025-04-29 16:29:51 - __main__ - WARNING - Remaining missing values found unexpectedly:
+Series([], dtype: float64)
+2025-04-29 16:29:51 - visualizations.plots - INFO - Correlation heatmap saved as c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots\correlation_heatmap.png
+2025-04-29 16:29:51 - __main__ - INFO - Correlation heatmap saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots\correlation_heatmap.png
+2025-04-29 16:29:51 - __main__ - INFO - Final processed data saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/processed\processed_data.csv
+2025-04-29 16:29:51 - __main__ - INFO - Applying target mapping from configuration...
+2025-04-29 16:29:51 - utils.utils - INFO - Applying target mapping: {1.0: 1, 2.0: 0} to column 'HBsAg'
+2025-04-29 16:29:51 - utils.utils - INFO - Converted mapping keys to appropriate types: {1.0: 1, 2.0: 0}
+2025-04-29 16:29:51 - utils.utils - INFO - Original HBsAg values distribution:
+HBsAg
+2.0    5623
+1.0    2638
+Name: count, dtype: int64
+2025-04-29 16:29:51 - utils.utils - INFO - Percentage distribution:
+HBsAg
+2.0    68.06682
+1.0    31.93318
+Name: count, dtype: float64
+2025-04-29 16:29:51 - utils.utils - INFO - Mapped HBsAg values distribution:
+HBsAg
+0    5623
+1    2638
+Name: count, dtype: int64
+2025-04-29 16:29:51 - utils.utils - INFO - Mapping complete. Unique values in target column: [0, 1]
+2025-04-29 16:29:51 - __main__ - INFO - Mapped target data saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/processed\mapped_target_data.csv
+2025-04-29 16:29:51 - models.models_training - INFO - Setting up PyCaret experiment with kwargs: {'fix_imbalance': True, 'fix_imbalance_method': 'smote'}
+2025-04-29 16:29:52 - __main__ - INFO - Comparing and selecting initial best model...
+2025-04-29 16:29:52 - models.models_training - INFO - Comparing models...
+2025-04-29 16:30:19 - __main__ - INFO - Initial best model selected: GradientBoostingClassifier(ccp_alpha=0.0, criterion='friedman_mse', init=None,
+                           learning_rate=0.1, loss='log_loss', max_depth=3,
+                           max_features=None, max_leaf_nodes=None,
+                           min_impurity_decrease=0.0, min_samples_leaf=1,
+                           min_samples_split=2, min_weight_fraction_leaf=0.0,
+                           n_estimators=100, n_iter_no_change=None,
+                           random_state=123, subsample=1.0, tol=0.0001,
+                           validation_fraction=0.1, verbose=0,
+                           warm_start=False)
+2025-04-29 16:30:19 - __main__ - INFO - Model comparison results:
+2025-04-29 16:30:19 - __main__ - INFO -                                     Model  Accuracy     AUC  Recall   Prec.      F1   Kappa     MCC  TT (Sec)
+gbc          Gradient Boosting Classifier    0.7319  0.7642  0.4805  0.6009  0.5332  0.3486  0.3534     0.258
+lightgbm  Light Gradient Boosting Machine    0.7292  0.7538  0.4739  0.5947  0.5266  0.3407  0.3454     0.317
+ada                  Ada Boost Classifier    0.7158  0.7366  0.4995  0.5620  0.5285  0.3263  0.3277     0.079
+et                 Extra Trees Classifier    0.7155  0.7383  0.4474  0.5698  0.5003  0.3058  0.3106     0.119
+rf               Random Forest Classifier    0.7134  0.7497  0.4707  0.5615  0.5113  0.3110  0.3139     0.164
+dummy                    Dummy Classifier    0.6807  0.5000  0.0000  0.0000  0.0000  0.0000  0.0000     0.012
+lr                    Logistic Regression    0.6479  0.7174  0.6998  0.4658  0.5590  0.2852  0.3020     0.615
+dt               Decision Tree Classifier    0.6472  0.6030  0.4810  0.4513  0.4653  0.2026  0.2030     0.020
+ridge                    Ridge Classifier    0.6422  0.7183  0.7047  0.4605  0.5568  0.2782  0.2964     0.012
+lda          Linear Discriminant Analysis    0.6422  0.7183  0.7047  0.4605  0.5568  0.2782  0.2964     0.014
+nb                            Naive Bayes    0.6140  0.6523  0.6435  0.4300  0.5153  0.2151  0.2276     0.385
+knn                K Neighbors Classifier    0.6116  0.6428  0.5981  0.4236  0.4957  0.1947  0.2025     0.445
+qda       Quadratic Discriminant Analysis    0.5645  0.6747  0.7773  0.4050  0.5324  0.1944  0.2320     0.013
+svm                   SVM - Linear Kernel    0.5429  0.5851  0.6199  0.3886  0.4271  0.1055  0.1458     0.023
+2025-04-29 16:30:19 - __main__ - INFO - Model comparison results saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945\model_comparison_results.csv
+2025-04-29 16:30:19 - __main__ - INFO - Attempting to tune and ensemble the initial best model: GradientBoostingClassifier(ccp_alpha=0.0, criterion='friedman_mse', init=None,
+                           learning_rate=0.1, loss='log_loss', max_depth=3,
+                           max_features=None, max_leaf_nodes=None,
+                           min_impurity_decrease=0.0, min_samples_leaf=1,
+                           min_samples_split=2, min_weight_fraction_leaf=0.0,
+                           n_estimators=100, n_iter_no_change=None,
+                           random_state=123, subsample=1.0, tol=0.0001,
+                           validation_fraction=0.1, verbose=0,
+                           warm_start=False)...
+2025-04-29 16:30:19 - models.model_evaluation - INFO - Tuning hyperparameters for model: GradientBoostingClassifier...
+2025-04-29 16:30:58 - models.model_evaluation - INFO - Ensembling tuned model (GradientBoostingClassifier) using Bagging...
+2025-04-29 16:30:58 - models.model_evaluation - INFO - Saving final tuned and ensembled model pipeline to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/models\best_model.pkl
+2025-04-29 16:30:58 - __main__ - INFO - Proceeding with final model: GradientBoostingClassifier(ccp_alpha=0.0, criterion='friedman_mse', init=None,
+                           learning_rate=0.1, loss='log_loss', max_depth=3,
+                           max_features=None, max_leaf_nodes=None,
+                           min_impurity_decrease=0.0, min_samples_leaf=1,
+                           min_samples_split=2, min_weight_fraction_leaf=0.0,
+                           n_estimators=100, n_iter_no_change=None,
+                           random_state=123, subsample=1.0, tol=0.0001,
+                           validation_fraction=0.1, verbose=0,
+                           warm_start=False)
+2025-04-29 16:30:58 - __main__ - INFO - Evaluating final model...
+2025-04-29 16:30:58 - models.model_evaluation - INFO - Evaluating model on test set: GradientBoostingClassifier(ccp_alpha=0.0, criterion='friedman_mse', init=None,
+                           learning_rate=0.1, loss='log_loss', max_depth=3,
+                           max_features=None, max_leaf_nodes=None,
+                           min_impurity_decrease=0.0, min_samples_leaf=1,
+                           min_samples_split=2, min_weight_fraction_leaf=0.0,
+                           n_estimators=100, n_iter_no_change=None,
+                           random_state=123, subsample=1.0, tol=0.0001,
+                           validation_fraction=0.1, verbose=0,
+                           warm_start=False)
+2025-04-29 16:30:58 - models.model_evaluation - INFO - Test set predictions saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945\test_predictions.csv
+2025-04-29 16:30:58 - __main__ - INFO - Predictions (first 5 rows):
+2025-04-29 16:30:58 - __main__ - INFO -       Country_of_Birth  Income_to_Poverty_Ratio  Gender  Age  Household_Reference_Country  Education_Level  Marital_Status  Household_Size  Family_Income  Race_Ethnicity  Injected_Drugs_Ever  HepatitisB_Vaccinated  Alcohol_Frequency_12m  Dental_Implant  Unprotected_Sex_12m  Private_Insurance  Body_Mass_Index  Waist_Circumference  HBsAg  prediction_label  prediction_score
+6856                 1                     5.00       1   50                          1.0              5.0             1.0               2           15.0               3                  2.0                      3                    7.0             2.0                  2.0               14.0        32.200001           112.300003      0                 0            0.8849
+6504                 1                     0.00       2    4                          2.0              9.0            99.0               4           12.0               1                  9.0                      3                  999.0             0.0                  9.0               14.0        15.700000            52.900002      1                 1            0.5317
+9675                 1                     3.87       1   77                          1.0              3.0             1.0               2            9.0               4                  9.0                      3                    1.0             1.0                  9.0               99.0        36.000000           114.800003      0                 0            0.8774
+7136                 1                     3.18       1   12                          1.0              9.0            99.0               4           14.0               4                  9.0                      1                  999.0             0.0                  9.0               14.0        15.700000            59.299999      1                 0            0.6315
+5072                 1                     0.91       1    9                          1.0              9.0            99.0               5            6.0               4                  9.0                      1                  999.0             0.0                  9.0               14.0        21.400000            73.199997      0                 0            0.6203
+2025-04-29 16:30:58 - __main__ - INFO - Starting Model Interpretability Analysis for final model
+2025-04-29 16:30:58 - models.model_interpretation - INFO - Generating interpretation plots based on config: ['shap', 'pdp', 'msa', 'pfi', 'correlation']
+2025-04-29 16:30:58 - models.model_interpretation - INFO - Generating SHAP plots...
+2025-04-29 16:30:58 - models.model_interpretation - INFO - Preparing data for SHAP explainer...
+2025-04-29 16:30:58 - models.model_interpretation - WARNING - Using KernelExplainer for SHAP - this can be slow.
+2025-04-29 16:30:58 - models.model_interpretation - INFO - Using TreeExplainer for SHAP
+2025-04-29 16:30:59 - models.model_interpretation - INFO - SHAP summary plot saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945\plots\shap_summary_plot.png
+2025-04-29 16:30:59 - models.model_interpretation - INFO - SHAP feature importance plot saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945\plots\shap_importance_plot.png
+2025-04-29 16:30:59 - models.model_interpretation - INFO - Restored SHAP logger level.
+2025-04-29 16:30:59 - models.model_interpretation - INFO - Generating Partial Dependence plots...
+2025-04-29 16:30:59 - models.model_interpretation - INFO - Generating pdp interpretation plot
+2025-04-29 16:30:59 - interpret.utils._unify_data - INFO - Unifying data
+2025-04-29 16:31:00 - models.model_interpretation - INFO - Generating Morris Sensitivity Analysis...
+2025-04-29 16:31:00 - models.model_interpretation - INFO - Generating msa interpretation plot
+2025-04-29 16:31:00 - interpret.utils._unify_data - INFO - Unifying data
+2025-04-29 16:31:00 - models.model_interpretation - INFO - Generating Permutation Feature Importance...
+2025-04-29 16:31:00 - models.model_interpretation - INFO - Generating pfi interpretation plot
+2025-04-29 16:31:00 - models.model_interpretation - INFO - Generating correlation plots...
+2025-04-29 16:31:00 - models.model_interpretation - INFO - Generating correlation interpretation plot
+2025-04-29 16:31:00 - models.model_interpretation - ERROR - Error generating correlation plot: This function only supports tree based models for binary classification: dt, rf, lightgbm, et.
+2025-04-29 16:31:00 - models.model_interpretation - INFO - Generating correlation interpretation plot
+2025-04-29 16:31:00 - models.model_interpretation - ERROR - Error generating correlation plot: This function only supports tree based models for binary classification: dt, rf, lightgbm, et.
+2025-04-29 16:31:00 - models.model_interpretation - INFO - Generating correlation interpretation plot
+2025-04-29 16:31:00 - models.model_interpretation - ERROR - Error generating correlation plot: This function only supports tree based models for binary classification: dt, rf, lightgbm, et.
+2025-04-29 16:31:00 - __main__ - INFO - Checking model fairness for features: ['Gender', 'Race_Ethnicity', 'Age']
+2025-04-29 16:31:00 - models.model_interpretation - INFO - Checking model fairness for features: ['Gender', 'Race_Ethnicity', 'Age']
+2025-04-29 16:31:00 - fairlearn.metrics._metric_frame - WARNING - Found 790 subgroups. Evaluation may be slow
+2025-04-29 16:31:01 - fairlearn.metrics._metric_frame - WARNING - Found 790 subgroups. Evaluation may be slow
+2025-04-29 16:31:13 - models.model_interpretation - INFO - Fairness metrics saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945\fairness_metrics.csv
+2025-04-29 16:31:13 - __main__ - INFO - Model Interpretability Analysis Completed.
+2025-04-29 16:31:13 - utils.utils - INFO - Moved HTML MSA msa.html to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/interpretability
+2025-04-29 16:31:13 - utils.utils - INFO - Moved HTML PDP pdp.html to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/interpretability
+2025-04-29 16:31:13 - utils.utils - INFO - Moved HTML PFI pfi.html to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/interpretability
+2025-04-29 16:31:13 - __main__ - INFO - Generating PyCaret model evaluation plots for final model...
+2025-04-29 16:31:22 - visualizations.plots - INFO - Auc plot saved
+2025-04-29 16:31:22 - visualizations.plots - INFO - Confusion_matrix plot saved
+2025-04-29 16:31:22 - visualizations.plots - INFO - Feature plot saved
+2025-04-29 16:32:25 - visualizations.plots - INFO - Threshold plot saved
+2025-04-29 16:32:25 - visualizations.plots - INFO - Pr plot saved
+2025-04-29 16:32:26 - visualizations.plots - INFO - Error plot saved
+2025-04-29 16:32:26 - visualizations.plots - INFO - Class_report plot saved
+2025-04-29 16:32:28 - visualizations.plots - INFO - Boundary plot saved
+2025-04-29 16:32:37 - visualizations.plots - INFO - Learning plot saved
+2025-04-29 16:32:38 - visualizations.plots - INFO - Calibration plot saved
+2025-04-29 16:32:38 - visualizations.plots - INFO - Lift plot saved
+2025-04-29 16:32:38 - visualizations.plots - INFO - Ks plot saved
+2025-04-29 16:32:39 - visualizations.plots - INFO - Gain plot saved
+2025-04-29 16:32:39 - visualizations.plots - INFO - Feature importance plot saved
+2025-04-29 16:32:39 - utils.utils - INFO - Moved plot AUC.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots
+2025-04-29 16:32:39 - utils.utils - INFO - Moved plot Calibration Curve.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots
+2025-04-29 16:32:39 - utils.utils - INFO - Moved plot Class Report.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots
+2025-04-29 16:32:39 - utils.utils - INFO - Moved plot Confusion Matrix.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots
+2025-04-29 16:32:39 - utils.utils - INFO - Moved plot Decision Boundary.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots
+2025-04-29 16:32:39 - utils.utils - INFO - Moved plot Feature Importance.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots
+2025-04-29 16:32:39 - utils.utils - INFO - Moved plot Gain Chart.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots
+2025-04-29 16:32:39 - utils.utils - INFO - Moved plot KS Statistic Plot.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots
+2025-04-29 16:32:39 - utils.utils - INFO - Moved plot Learning Curve.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots
+2025-04-29 16:32:39 - utils.utils - INFO - Moved plot Lift Chart.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots
+2025-04-29 16:32:39 - utils.utils - INFO - Moved plot Precision Recall.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots
+2025-04-29 16:32:39 - utils.utils - INFO - Moved plot Prediction Error.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots
+2025-04-29 16:32:39 - utils.utils - INFO - Moved plot Threshold.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/plots
+2025-04-29 16:32:39 - __main__ - INFO - ================================================================================
+2025-04-29 16:32:39 - __main__ - INFO - Analysis completed successfully at 2025-04-29 16:32:39
+2025-04-29 16:32:39 - __main__ - INFO - Results saved in c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945
+2025-04-29 16:32:39 - __main__ - INFO - Log file saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250429_162945/analysis.txt
