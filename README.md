@@ -137,8 +137,6 @@ Each execution generates a unique `outputs/run_{timestamp}` directory containing
 
 ## Contributing
 
-(Standard contribution guidelines - keep if relevant)
-
 1.  Fork the repository.
 2.  Create your feature branch (`git checkout -b feature/your-feature`).
 3.  Commit your changes (`git commit -m 'Add some feature'`).
