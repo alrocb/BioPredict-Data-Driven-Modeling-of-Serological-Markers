@@ -2,7 +2,8 @@
 
 
 [![Python](https://img.shields.io/badge/python-3.9--3.11.*-blue.svg)](https://www.python.org/downloads/)
-
+![State](https://img.shields.io/badge/Estado-Activo-success)
+![Version](https://img.shields.io/badge/Versión-1.0.0-informational)
 
 ## Project Overview
 
