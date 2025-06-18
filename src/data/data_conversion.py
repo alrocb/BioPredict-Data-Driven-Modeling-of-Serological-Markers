@@ -72,18 +72,3 @@ def convert_xpt_to_csv(input_folder, output_folder):
     
     logger.info(f"Conversion complete. Processed {files_processed} files.")
     return files_processed
-
-def main():
-    """Main function to execute the conversion process."""
-    project_root = get_project_root()
-    
-    # Define input and output folders
-    input_folder = os.path.join(project_root, "data", "raw")
-    output_folder = os.path.join(project_root, "data", "interim")
-    
-    logger.info("Starting NHANES data conversion process")
-    num_files = convert_xpt_to_csv(input_folder, output_folder)
-    logger.info(f"Conversion completed. Converted {num_files} files.")
-
-if __name__ == "__main__":
-    main()

@@ -255,18 +255,3 @@ def merge_by_cycles_nhanes_data(input_dir, output_file, key=PRIMARY_KEY):
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     final_merged.to_csv(output_file, index=False)
     logger.info(f"Merged data saved to {output_file}")
-
-def main():
-    """Main function to execute the data merging process by cycles."""
-    project_root = get_project_root()
-    
-    # Define input directory and output file paths
-    input_dir = os.path.join(project_root, "BioPredict","data", "interim")
-    output_file = os.path.join(project_root,"BioPredict", "data", "extra", "merged.csv")
-    
-    logger.info("Starting NHANES data merging by cycles process")
-    merge_by_cycles_nhanes_data(input_dir, output_file)
-    logger.info("Data merging by cycles completed")
-
-if __name__ == "__main__":
-    main()

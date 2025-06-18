@@ -246,22 +246,3 @@ def check_model_fairness(exp, model, sensitive_features, output_dir):
         logger.error(f"Error in fairness check: {str(e)}")
         return None
 
-if __name__ == "__main__":
-    # This allows the module to be run as a script for testing
-    import sys
-    from models_training import setup_experiment, compare_and_select_model
-    
-    # Example usage (similar to what would be in main.py)
-    logger.info("Loading data...")
-    # Add code to load your dataframe here
-    
-    # Setup experiment
-    #exp = setup_experiment(df, target_column='HBsAg')
-    #best_model, _ = compare_and_select_model(exp)
-    
-    # Generate interpretability plots
-    #output_dir = "../outputs"
-    #generate_all_interpretation_plots(exp, best_model, output_dir)
-    
-    # Check fairness if demographic features are available
-    #check_model_fairness(exp, best_model, ['Sex', 'Race_Ethnicity', 'Age'], output_dir)
