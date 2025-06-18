@@ -1,8 +1,9 @@
 # BioPredict - Data-Driven Modeling of Serological Markers using NHANES Data
 
-[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE) 
-[![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) 
+
+[![Python](https://img.shields.io/badge/python-3.9--3.11.*-blue.svg)](https://www.python.org/downloads/)
+![State](https://img.shields.io/badge/State-Active-success)
+![Version](https://img.shields.io/badge/Version-1.0.0-informational)
 
 ## Project Overview
 
