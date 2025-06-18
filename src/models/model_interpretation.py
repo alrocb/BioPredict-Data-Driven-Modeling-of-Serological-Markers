@@ -103,31 +103,32 @@ def generate_shap_plots(exp, model, output_dir):
         
         # Sample data for SHAP (for performance)
         X_sample = X_train.sample(min(100, len(X_train)), random_state=42)
-        
-        # Tree explainer for tree-based models, Kernel explainer as fallback
+          # Tree explainer for tree-based models, Kernel explainer as fallback
         try:
-            logger.warning("Using KernelExplainer for SHAP - this can be slow.")
+            logger.info("Attempting TreeExplainer for SHAP")
             explainer = shap.TreeExplainer(estimator)
             shap_values = explainer.shap_values(X_sample)
+            X_shap = X_sample  # Use the full sample for plotting
             logger.info("Using TreeExplainer for SHAP")
         except Exception:
             logger.warning("TreeExplainer failed, using KernelExplainer")
-            # Use KernelExplainer as fallback
+            # Use KernelExplainer as fallback with smaller sample for performance
+            X_kernel_sample = shap.sample(X_sample, 50)
             if hasattr(estimator, 'predict_proba'):
-                explainer = shap.KernelExplainer(estimator.predict_proba, shap.sample(X_sample, 50))
+                explainer = shap.KernelExplainer(estimator.predict_proba, X_kernel_sample)
             else:
-                explainer = shap.KernelExplainer(estimator.predict, shap.sample(X_sample, 50))
-            shap_values = explainer.shap_values(shap.sample(X_sample, 50))
+                explainer = shap.KernelExplainer(estimator.predict, X_kernel_sample)
+            shap_values = explainer.shap_values(X_kernel_sample)
+            X_shap = X_kernel_sample  # Use the kernel sample for plotting
         
         # For binary classification, use the positive class (class 1)
         if isinstance(shap_values, list) and len(shap_values) > 1:
             shap_values_to_plot = shap_values[1]
         else:
             shap_values_to_plot = shap_values[0] if isinstance(shap_values, list) else shap_values
-            
-        # Summary plot (beeswarm)
+              # Summary plot (beeswarm)
         plt.figure(figsize=(12, 8))
-        shap.summary_plot(shap_values_to_plot, X_sample, feature_names=feature_names, show=False)
+        shap.summary_plot(shap_values_to_plot, X_shap, feature_names=feature_names, show=False)
         plt.title('SHAP Summary Plot')
         summary_path = os.path.join(plots_dir, "shap_summary_plot.png")
         plt.savefig(summary_path)
@@ -136,7 +137,7 @@ def generate_shap_plots(exp, model, output_dir):
         
         # Bar plot of feature importance
         plt.figure(figsize=(12, 8))
-        shap.summary_plot(shap_values_to_plot, X_sample, plot_type="bar", feature_names=feature_names, show=False)
+        shap.summary_plot(shap_values_to_plot, X_shap, plot_type="bar", feature_names=feature_names, show=False)
         plt.title('SHAP Feature Importance')
         bar_path = os.path.join(plots_dir, "shap_importance_plot.png")
         plt.savefig(bar_path)

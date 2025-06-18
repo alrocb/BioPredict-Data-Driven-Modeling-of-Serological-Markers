@@ -35,7 +35,7 @@ from models.model_interpretation import (
 
 # Additional modules for conversion, merging, and cleaning
 from data.data_conversion import convert_xpt_to_csv
-from data.data_merging import merge_nhanes_data
+from data.data_merging import merge_by_cycles_nhanes_data
 # Import specific cleaning functions needed
 from data.data_cleaning import (
     impute_missing_values,
@@ -99,16 +99,17 @@ def main():
         # ---------------------------
         # 1. Data Conversion (Optional)
         # ---------------------------
-        # logger.info("Starting Data Conversion Process")
-        # num_converted = convert_xpt_to_csv(raw_dir, interim_dir)
-        # logger.info(f"Data Conversion Completed: {num_converted} files converted.")
+        logger.info("Starting Data Conversion Process")
+        num_converted = convert_xpt_to_csv(raw_dir, interim_dir)
+        logger.info(f"Data Conversion Completed: {num_converted} files converted.")
 
         # ---------------------------
         # 2. Data Merging
         # ---------------------------
         logger.info("Starting Data Merging Process")
         os.makedirs(os.path.dirname(merged_file), exist_ok=True)
-        merge_nhanes_data(interim_dir, merged_file)
+        #merge_nhanes_data(interim_dir, merged_file)
+        merge_by_cycles_nhanes_data(interim_dir, merged_file)  # Merge within cycles, then concatenate
         logger.info("Data Merging Completed.")
 
         # ---------------------------
@@ -252,13 +253,10 @@ def main():
             modeling_df.to_csv(mapped_target_file, index=False)
             logger.info(f"Mapped target data saved to {mapped_target_file}")
         else:
-             logger.warning("No target mapping specified in configuration.")
-
-
-        # Set up PyCaret experiment
+             logger.warning("No target mapping specified in configuration.")        # Set up PyCaret experiment
         exp = setup_experiment(modeling_df, config)
         logger.info("Comparing and selecting initial best model...")
-        best_model_initial, model_results = compare_and_select_model(exp)
+        best_model_initial, model_results = compare_and_select_model(exp, config)
         logger.info(f"Initial best model selected: {best_model_initial}")
         logger.info("Model comparison results:")
 
@@ -276,7 +274,7 @@ def main():
 
 
         # ---------------------------
-        # 11. Model Tuning, Ensembling, and Saving
+        # 11. Model Tuning, and Saving
         # ---------------------------
         logger.info(f"Attempting to tune and ensemble the initial best model: {best_model_initial}...")
         os.makedirs(models_dir, exist_ok=True) # Ensure models dir exists

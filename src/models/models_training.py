@@ -64,7 +64,7 @@ def setup_experiment(modeling_df, cfg):
     return exp
 
 
-def compare_and_select_model(exp):
+def compare_and_select_model(exp, cfg):
     """
     Compare multiple models and select the best performing one.
     
@@ -72,14 +72,19 @@ def compare_and_select_model(exp):
     ----------
     exp : ClassificationExperiment
         A PyCaret classification experiment.
+    cfg : dict
+        Configuration dictionary containing modeling parameters.
         
     Returns
     -------
     tuple
         Best model and a DataFrame with model comparison results.
     """
-    logger.info("Comparing models...")
-    best_model = exp.compare_models()
+    # Get the sort metric from configuration, default to 'AUC' if not specified
+    sort_metric = cfg.get('modeling', {}).get('model_comparison_sort', 'AUC')
+    
+    logger.info(f"Comparing models sorted by {sort_metric}...")
+    best_model = exp.compare_models(sort=sort_metric)
     model_results = exp.pull()
     return best_model, model_results
 

@@ -13,7 +13,7 @@ from pycaret.classification import ClassificationExperiment
 logger = logging.getLogger(__name__)
 
 # Rename and modify the function to accept the model to refine
-def tune_model(exp, model_to_refine, models_dir):
+def tune_model(exp, model_to_refine, models_dir, tuning_config=None):
     """
     Tunes the hyperparameters of the provided model, creates a Bagging ensemble
     of the tuned model, saves the final ensembled pipeline, and returns the
@@ -27,18 +27,26 @@ def tune_model(exp, model_to_refine, models_dir):
         The model object (e.g., the initial best model) to tune and ensemble.
     models_dir : str
         Directory to save the final model pipeline.
+    tuning_config : dict, optional
+        Configuration parameters for tuning (from config.yaml).
 
     Returns
     -------
     object
         The final ensembled model object or None if failed.
-    """
+    """    
     try:
         model_name = type(model_to_refine).__name__
         logger.info(f"Tuning hyperparameters for model: {model_name}...")
-        # Tune the passed model
-        tuned_model = exp.tune_model(model_to_refine, choose_better=True) # Keep the better one
-
+        
+        # Use tuning_config directly as kwargs, PyCaret will use defaults for missing params
+        tune_kwargs = tuning_config if tuning_config else {}
+        
+        logger.info(f"Tuning with parameters: {tune_kwargs}")
+        
+        # Tune the model with configured parameters (or defaults if no config)
+        tuned_model = exp.tune_model(model_to_refine, **tune_kwargs)
+        
         # logger.info(f"Ensembling tuned model ({model_name}) using Bagging...")
         # Ensemble the tuned model
         #ensembled_model = exp.ensemble_model(tuned_model, choose_better=True) # Keep the better one
@@ -47,7 +55,7 @@ def tune_model(exp, model_to_refine, models_dir):
         os.makedirs(models_dir, exist_ok=True)
 
         # Define path for the final model
-        final_model_filename = "best_model.pkl"
+        final_model_filename = "best_model"
         final_model_path = os.path.join(models_dir, final_model_filename)
 
         # Save the final ensembled model pipeline

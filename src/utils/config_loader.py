@@ -124,7 +124,9 @@ def setup_logging(config, force_console=False):
         elif force_console:
             log_config_dict['root']['handlers'] = ['console']
 
-        logging.config.dictConfig(log_config_dict)
+        
+            
+            logging.config.dictConfig(log_config_dict)
         logging.info("Logging configured using dictConfig.")
         if log_file_path and not force_console:
             logging.info(f"Logging to file: {log_file_path}")

@@ -20,52 +20,46 @@ data_cleaning:
   columns_to_drop: # Columns to drop explicitly during cleaning
     - 'SEQN' # Example identifier column often removed
   imputation_mapping:
-    'DMDBORN4': 99
-    'INDFMPIR': 0
     'RIAGENDR': 0
     'RIDAGEYR': 0
-    'DMDHRBR4': 99
-    'DMDEDUC2': 9
-    'DMDMARTL': 99
-    'DMDHHSIZ': 0
-    'INDFMIN2': 99
     'RIDRETH1': 0
-    'DUQ370': 9
-    'IMQ020': 9
-    'ALQ120Q': 999
-    'OHXIMP': 0
-    'SXQ251': 9
-    'HIQ031A': 99
-    'BMXBMI': 0
-    'BMXWAIST': 0
-    'LBXHBS': 0 
+    # 'DMDEDUC2': 9
+    # 'DMDMARTL': 99
+    # 'DUQ370': 9
+    # 'ALQ120Q': 999
+    # 'HIQ031A': 99
+    # 'BMXWAIST': 0
+    # 'PEASCTM1': 0
+    # 'OHQ870': 99
+    # 'CSQ450': 999
+    # 'DMDBORN4': 99
+    # 'INDFMPIR': 0
 data_preprocessing:
   column_mapping:
-    "DMDBORN4": "Country_of_Birth"
-    "INDFMPIR": "Income_to_Poverty_Ratio"
     "RIAGENDR": "Gender" 
     "RIDAGEYR": "Age"
-    "DMDHRBR4": "Household_Reference_Country"
-    "DMDEDUC2": "Education_Level"
-    "DMDMARTL": "Marital_Status"
-    "DMDHHSIZ": "Household_Size"
-    "INDFMIN2": "Family_Income"
     "RIDRETH1": "Race_Ethnicity"
-    "DUQ370": "Injected_Drugs_Ever"
-    "IMQ020": "HepatitisB_Vaccinated"
-    "ALQ120Q": "Alcohol_Frequency_12m"
-    "OHXIMP": "Dental_Implant"
-    "SXQ251": "Unprotected_Sex_12m"
-    "HIQ031A": "Private_Insurance"
-    "BMXBMI": "Body_Mass_Index"
-    "BMXWAIST": "Waist_Circumference"
-    "LBXHBS": "HBsAg" # Target column renamed
+    "LBXHBS": "Hepatitis_B" # Target column renamed
+    # "PEASCTM1": "Blood_Pressure"   
+    # "BMXWAIST": "Waist_Circumference"
+    # "DMDEDUC2": "Education_Level"
+    # "OHQ870": "Dental_Visit_Reason" 
+    # "CSQ450": "Smoking_Status" 
+    # "DMDBORN4": "Country_of_Birth"
+    # "INDFMPIR": "Income_to_Poverty_Ratio"
+    # "DMDMARTL": "Marital_Status"
+    # "DUQ370": "Injected_Drugs_Ever"
+    # "ALQ120Q": "Alcohol_Frequency_12m"
+    # "HIQ031A": "Private_Insurance"
+
+
 
 modeling:
-  target_column: 'HBsAg' # Renamed target column for modeling
+  target_column: 'Hepatitis_B' # Renamed target column for modeling
   train_size: 0.7
   session_id: 123
   log_experiment: false
+  model_comparison_sort: 'AUC' # Metric to sort models by in compare_models: 'Accuracy', 'AUC', 'Recall', 'Precision', 'F1', 'Kappa', 'MCC'
   target_mapping: # Add this mapping
     1.0: 1 # Map original positive class (1.0) to PyCaret positive (1)
     2.0: 0 # Map original negative class (2.0) to PyCaret negative (0)
@@ -79,12 +73,29 @@ modeling:
     - 'pdp'  # Generate Partial Dependence Plots
     - 'msa'  # Generate Morris Sensitivity Analysis
     - 'pfi'  # Generate Permutation Feature Importance
-    - 'correlation' # Generate Correlation plots 
+    - 'correlation' # Generate Correlation plots   # Tuning configuration parameters
+  tuning_params:
+    n_iter: 50                     # Number of iterations for hyperparameter search
+    optimize: 'AUC'                # Metric to optimize: 'Accuracy', 'AUC', 'Recall', 'Precision', 'F1', 'Kappa', 'MCC'
+    search_library: 'optuna'       # Search algorithm: 'scikit-learn', 'scikit-optimize', 'tune-sklearn', 'optuna'
+    search_algorithm: 'tpe'        # For optuna: 'random', 'tpe' (Tree-structured Parzen Estimator)
+    early_stopping: true           # Enable early stopping to prevent overfitting
+    early_stopping_max_iters: 10   # Stop if no improvement after X iterations
+    choose_better: true            # Keep better model between original and tuned
+    
   setup_params:
     fix_imbalance: true          # turn SMOTE on/off here
     fix_imbalance_method: smote  # smote | smotenc | adasyn | borderline_smote …
-    #normalize: true              # any other PyCaret flag you need later
-    #feature_selection: true
+    normalize: true              # any other PyCaret flag you need later
+    normalize_method: zscore   # Normalization method
+    # feature_selection: true
+    use_gpu: false
+    numeric_imputation: 999        # Manual imputation if needed for numeric columns
+    # categorical_imputation: mode    # Imputation for categorical columns
+
+# All parameters for the PyCaret Setup function can be revised inside it.
+
+
 # Add a new section for visualization configurations
 visualizations:
   pycaret_plots: # List of plots for generate_visualizations
@@ -101,6 +112,8 @@ visualizations:
     - 'lift'
     - 'ks'
     - 'gain'
+    - 'vc'
+    - 'parameter'
 
 logging:
   log_file: "outputs/analysis.log" # Path for the log file
