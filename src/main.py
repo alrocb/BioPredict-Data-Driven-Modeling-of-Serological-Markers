@@ -35,7 +35,7 @@ from models.model_interpretation import (
 
 # Additional modules for conversion, merging, and cleaning
 from data.data_conversion import convert_xpt_to_csv
-from data.data_merging import merge_by_cycles_nhanes_data
+from data.data_merging import merge_by_cycles_nhanes_data, merge_nhanes_data
 # Import specific cleaning functions needed
 from data.data_cleaning import (
     impute_missing_values,
@@ -108,8 +108,8 @@ def main():
         # ---------------------------
         logger.info("Starting Data Merging Process")
         os.makedirs(os.path.dirname(merged_file), exist_ok=True)
-        #merge_nhanes_data(interim_dir, merged_file)
-        merge_by_cycles_nhanes_data(interim_dir, merged_file)  # Merge within cycles, then concatenate
+        merge_nhanes_data(interim_dir, merged_file)  #-> If with provided data, use this
+        #merge_by_cycles_nhanes_data(interim_dir, merged_file)  # If working with RAW new DATASET
         logger.info("Data Merging Completed.")
 
         # ---------------------------
