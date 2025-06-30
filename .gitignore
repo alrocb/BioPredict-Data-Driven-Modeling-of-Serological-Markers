@@ -38,29 +38,9 @@ logs.log
 *.db
 *.sqlite3
 
-# Data
-# Ignore all content within data subdirectories, but keep the directories
-# Add an empty .gitkeep file in each directory to force Git to track it.
-/data/external/**
-!/data/external/.gitkeep
-!data/external/README.md
-/data/interim/**
-!/data/interim/.gitkeep
-!data/interim/README.md
-/data/processed/**
-!/data/processed/.gitkeep
-!data/processed/README.md
-/data/raw/**
-!/data/raw/.gitkeep
-!data/raw/README.md
-/data/extra/**
-!/data/extra/.gitkeep
-!data/extra/README.md
 
-# Outputs
-# Ignore all content within outputs, but keep the directory
-/outputs/**
-!/outputs/.gitkeep
+
+
 
 # DevContainer
 

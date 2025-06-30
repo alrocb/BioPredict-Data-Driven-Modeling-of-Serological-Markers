@@ -1,0 +1,344 @@
+2025-06-09 16:21:41 - root - INFO - Logging configured using dictConfig.
+2025-06-09 16:21:41 - root - INFO - Logging to file: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_{timestamp}/analysis.txt
+Enhanced terminal output capture enabled. Logging to: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_{timestamp}/analysis.txt
+2025-06-09 16:21:41 - utils.utils - INFO - Created timestamped run directory: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141
+2025-06-09 16:21:41 - root - INFO - Logging configured using dictConfig.
+2025-06-09 16:21:41 - root - INFO - Logging to file: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/analysis.txt
+Enhanced terminal output capture enabled. Logging to: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/analysis.txt
+2025-06-09 16:21:41 - __main__ - INFO - Analysis started at 2025-06-09 16:21:41
+2025-06-09 16:21:41 - __main__ - INFO - Results will be saved in: c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141
+2025-06-09 16:21:41 - __main__ - INFO - Using configuration:
+2025-06-09 16:21:41 - __main__ - INFO - ================================================================================
+2025-06-09 16:21:41 - __main__ - INFO - Starting Data Merging Process
+2025-06-09 16:21:41 - data.data_merging - INFO - Looking for CSV files in c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/interim
+2025-06-09 16:21:41 - data.data_merging - ERROR - Error reading medications.csv: 'utf-8' codec can't decode byte 0xf6 in position 239072: invalid start byte
+2025-06-09 16:21:45 - data.data_merging - INFO - Merged data saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/extra/merged.csv
+2025-06-09 16:21:45 - __main__ - INFO - Data Merging Completed.
+2025-06-09 16:21:45 - __main__ - INFO - Loading merged data from c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/extra/merged.csv
+2025-06-09 16:21:45 - __main__ - INFO - Loaded merged data with shape: (9813, 1812)
+2025-06-09 16:21:45 - __main__ - INFO - Dropped 1552 rows with missing raw target ('LBXHBS'). Shape is now: (8261, 1812)
+2025-06-09 16:21:45 - data.data_cleaning - INFO - Dropping specified columns: ['SEQN']
+2025-06-09 16:21:45 - __main__ - INFO - Data shape after dropping specified columns: (8261, 1811)
+2025-06-09 16:21:45 - __main__ - INFO - Imputing missing values using mapping (ensure mapping uses RENAMED columns)
+2025-06-09 16:21:45 - data.data_cleaning - INFO - Imputing missing values based on configuration mapping.
+2025-06-09 16:21:45 - data.data_cleaning - INFO - Imputed missing values in 10 columns based on mapping.
+2025-06-09 16:21:45 - __main__ - WARNING - There are still 9187342 missing values after imputation. Check mapping and data.
+2025-06-09 16:21:45 - __main__ - INFO - Renaming and Selecting Features based on config
+2025-06-09 16:21:45 - utils.info_renamedata - INFO - Renaming and selecting columns based on configuration...
+2025-06-09 16:21:45 - utils.info_renamedata - INFO - Selected 15 columns and renamed them.
+2025-06-09 16:21:45 - __main__ - INFO - Data shape after renaming and selection: (8261, 15)
+2025-06-09 16:21:45 - __main__ - INFO - Columns remaining: ['Gender', 'Age', 'Race_Ethnicity', 'Hepatitis_B', 'Blood_Pressure', 'Waist_Circumference', 'Education_Level', 'Dental_Visit_Reason', 'Smoking_Status', 'Country_of_Birth', 'Income_to_Poverty_Ratio', 'Marital_Status', 'Injected_Drugs_Ever', 'Alcohol_Frequency_12m', 'Private_Insurance']
+2025-06-09 16:21:45 - __main__ - INFO - Applying further cleaning: Removing high-missing and low-variance columns
+2025-06-09 16:21:45 - data.data_cleaning - INFO - Removing 0 columns with more than 95% missing values 
+2025-06-09 16:21:45 - __main__ - INFO - Data shape after removing high-missing columns: (8261, 15)     
+2025-06-09 16:21:45 - __main__ - INFO - Temporarily separating target column 'Hepatitis_B' before low variance check.
+2025-06-09 16:21:45 - data.data_cleaning - INFO - Removing 0 low-variance features
+2025-06-09 16:21:45 - __main__ - INFO - Shape after removing low-variance features (excluding target): (8261, 14)
+2025-06-09 16:21:45 - __main__ - INFO - Re-added target column 'Hepatitis_B'.
+2025-06-09 16:21:45 - __main__ - INFO - Data shape after removing low-variance features and re-adding target (if applicable): (8261, 15)
+2025-06-09 16:21:45 - __main__ - INFO - Final Processed Data Info:
+2025-06-09 16:21:45 - __main__ - INFO - <class 'pandas.core.frame.DataFrame'>
+2025-06-09 16:21:45 - __main__ - INFO - Index: 8261 entries, 0 to 9811
+2025-06-09 16:21:45 - __main__ - INFO - Data columns (total 15 columns):
+2025-06-09 16:21:45 - __main__ - INFO -  #   Column                   Non-Null Count  Dtype
+2025-06-09 16:21:45 - __main__ - INFO - ---  ------                   --------------  -----  
+2025-06-09 16:21:45 - __main__ - INFO -  0   Gender                   8261 non-null   int64
+2025-06-09 16:21:45 - __main__ - INFO -  1   Age                      8261 non-null   int64
+2025-06-09 16:21:45 - __main__ - INFO -  2   Race_Ethnicity           8261 non-null   int64
+2025-06-09 16:21:45 - __main__ - INFO -  3   Blood_Pressure           8261 non-null   float64
+2025-06-09 16:21:45 - __main__ - INFO -  4   Waist_Circumference      8261 non-null   float64
+2025-06-09 16:21:45 - __main__ - INFO -  5   Education_Level          8261 non-null   float64
+2025-06-09 16:21:45 - __main__ - INFO -  6   Dental_Visit_Reason      8261 non-null   float64
+2025-06-09 16:21:45 - __main__ - INFO -  7   Smoking_Status           8261 non-null   float64
+2025-06-09 16:21:45 - __main__ - INFO -  8   Country_of_Birth         8261 non-null   int64
+2025-06-09 16:21:45 - __main__ - INFO -  9   Income_to_Poverty_Ratio  8261 non-null   float64
+2025-06-09 16:21:45 - __main__ - INFO -  10  Marital_Status           8261 non-null   float64
+2025-06-09 16:21:45 - __main__ - INFO -  11  Injected_Drugs_Ever      8261 non-null   float64
+2025-06-09 16:21:45 - __main__ - INFO -  12  Alcohol_Frequency_12m    8261 non-null   float64
+2025-06-09 16:21:45 - __main__ - INFO -  13  Private_Insurance        8261 non-null   float64
+2025-06-09 16:21:45 - __main__ - INFO -  14  Hepatitis_B              8261 non-null   float64
+2025-06-09 16:21:45 - __main__ - INFO - dtypes: float64(11), int64(4)
+2025-06-09 16:21:45 - __main__ - INFO - memory usage: 1.0 MB
+2025-06-09 16:21:45 - __main__ - INFO - Percentage of Missing Values (should be 0%):
+2025-06-09 16:21:45 - __main__ - WARNING - Remaining missing values found unexpectedly:
+Series([], dtype: float64)
+2025-06-09 16:21:46 - visualizations.plots - INFO - Correlation heatmap saved as c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots\correlation_heatmap.png
+2025-06-09 16:21:46 - __main__ - INFO - Correlation heatmap saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots\correlation_heatmap.png
+2025-06-09 16:21:46 - __main__ - INFO - Final processed data saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/processed\processed_data.csv
+2025-06-09 16:21:46 - __main__ - INFO - Applying target mapping from configuration...
+2025-06-09 16:21:46 - utils.utils - INFO - Applying target mapping: {1.0: 1, 2.0: 0} to column 'Hepatitis_B'
+2025-06-09 16:21:46 - utils.utils - INFO - Converted mapping keys to appropriate types: {1.0: 1, 2.0: 0}
+2025-06-09 16:21:46 - utils.utils - INFO - Original Hepatitis_B values distribution:
+Hepatitis_B
+2.0    5623
+1.0    2638
+Name: count, dtype: int64
+2025-06-09 16:21:46 - utils.utils - INFO - Percentage distribution:
+Hepatitis_B
+2.0    68.06682
+1.0    31.93318
+Name: count, dtype: float64
+2025-06-09 16:21:46 - utils.utils - INFO - Mapped Hepatitis_B values distribution:
+Hepatitis_B
+0    5623
+1    2638
+Name: count, dtype: int64
+2025-06-09 16:21:46 - utils.utils - INFO - Mapping complete. Unique values in target column: [0, 1]    
+2025-06-09 16:21:46 - __main__ - INFO - Mapped target data saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\data/processed\mapped_target_data.csv
+2025-06-09 16:21:46 - models.models_training - INFO - Setting up PyCaret experiment with kwargs: {'fix_imbalance': True, 'fix_imbalance_method': 'smote', 'normalize': True, 'normalize_method': 'zscore', 'use_gpu': False, 'numeric_imputation': 999}
+                    Description             Value
+0                    Session id               123
+1                        Target       Hepatitis_B
+2                   Target type            Binary
+3           Original data shape        (8261, 15)
+4        Transformed data shape       (10351, 15)
+5   Transformed train set shape        (7872, 15)
+6    Transformed test set shape        (2479, 15)
+7              Numeric features                14
+8                    Preprocess              True
+9               Imputation type            simple
+10           Numeric imputation               999
+11       Categorical imputation              mode
+12                Fix imbalance              True
+13         Fix imbalance method             smote
+14                    Normalize              True
+15             Normalize method            zscore
+16               Fold Generator   StratifiedKFold
+17                  Fold Number                10
+18                     CPU Jobs                -1
+19                      Use GPU             False
+20               Log Experiment             False
+21              Experiment Name  clf-default-name
+22                          USI              9421
+2025-06-09 16:21:47 - __main__ - INFO - Comparing and selecting initial best model...
+2025-06-09 16:21:47 - models.models_training - INFO - Comparing models...
+Processing:  82%|###########################################2         | 53/65 [00:14<00:04,  2.59it/s][LightGBM] [Info] Number of positive: 3542, number of negative: 3542
+[LightGBM] [Info] Number of positive: 3542, number of negative: 3542
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.000623 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 2718
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.001023 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Number of data points in the train set: 7084, number of used features: 14
+[LightGBM] [Info] Total Bins 2714
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+[LightGBM] [Info] Number of data points in the train set: 7084, number of used features: 14
+[LightGBM] [Info] Number of positive: 3543, number of negative: 3543
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.000671 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 2717
+[LightGBM] [Info] Number of data points in the train set: 7086, number of used features: 14
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+[LightGBM] [Info] Number of positive: 3543, number of negative: 3543
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.000634 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 2555
+[LightGBM] [Info] Number of data points in the train set: 7086, number of used features: 14
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+[LightGBM] [Info] Number of positive: 3542, number of negative: 3542
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.000845 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 2633
+[LightGBM] [Info] Number of data points in the train set: 7084, number of used features: 14
+[LightGBM] [Info] Number of positive: 3542, number of negative: 3542
+[LightGBM] [Info] Number of positive: 3542, number of negative: 3542
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.000816 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.000822 seconds.
+You can set `force_col_wise=true` to remove the overhead.[LightGBM] [Info] Total Bins 2543
+
+[LightGBM] [Info] Number of data points in the train set: 7084, number of used features: 14
+[LightGBM] [Info] Total Bins 2713
+[LightGBM] [Info] Number of data points in the train set: 7084, number of used features: 14
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+[LightGBM] [Info] Number of positive: 3543, number of negative: 3543
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.000660 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 2716
+[LightGBM] [Info] Number of data points in the train set: 7086, number of used features: 14
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+[LightGBM] [Info] Number of positive: 3543, number of negative: 3543
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.000737 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 2719
+[LightGBM] [Info] Number of data points in the train set: 7086, number of used features: 14
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+[LightGBM] [Info] Number of positive: 3542, number of negative: 3542
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.000662 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 2715
+[LightGBM] [Info] Number of data points in the train set: 7084, number of used features: 14
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+                                    Model  Accuracy     AUC  Recall   Prec.  \
+gbc          Gradient Boosting Classifier    0.7259  0.7395  0.4783  0.5874
+lightgbm  Light Gradient Boosting Machine    0.7202  0.7225  0.4545  0.5802
+ada                  Ada Boost Classifier    0.7196  0.7231  0.4859  0.5722
+rf               Random Forest Classifier    0.7077  0.7145  0.4480  0.5531
+et                 Extra Trees Classifier    0.7072  0.7029  0.4496  0.5512
+xgboost         Extreme Gradient Boosting    0.6944  0.7043  0.4301  0.5258
+dummy                    Dummy Classifier    0.6807  0.5000  0.0000  0.0000
+lr                    Logistic Regression    0.6577  0.7181  0.6792  0.4749
+ridge                    Ridge Classifier    0.6548  0.7181  0.6782  0.4717
+lda          Linear Discriminant Analysis    0.6544  0.7181  0.6782  0.4714
+svm                   SVM - Linear Kernel    0.6389  0.6907  0.6203  0.4532
+knn                K Neighbors Classifier    0.6328  0.6442  0.5341  0.4395
+dt               Decision Tree Classifier    0.6242  0.5790  0.4540  0.4185
+nb                            Naive Bayes    0.6198  0.6608  0.6874  0.4389
+qda       Quadratic Discriminant Analysis    0.5605  0.6858  0.7665  0.4014
+
+              F1   Kappa     MCC  TT (Sec)
+gbc       0.5268  0.3368  0.3406     0.152
+lightgbm  0.5089  0.3174  0.3225     0.102
+ada       0.5252  0.3283  0.3307     0.047
+rf        0.4945  0.2922  0.2957     0.084
+et        0.4944  0.2916  0.2950     0.060
+xgboost   0.4729  0.2609  0.2636     0.245
+dummy     0.0000  0.0000  0.0000     0.007
+lr        0.5587  0.2933  0.3062     0.220
+ridge     0.5562  0.2883  0.3014     0.010
+lda       0.5559  0.2878  0.3009     0.013
+svm       0.5224  0.2438  0.2527     0.013
+knn       0.4816  0.2019  0.2045     0.239
+dt        0.4354  0.1545  0.1548     0.014
+nb        0.5355  0.2393  0.2572     0.213
+qda       0.5267  0.1855  0.2207     0.012
+2025-06-09 16:22:04 - __main__ - INFO - Initial best model selected: GradientBoostingClassifier(ccp_alpha=0.0, criterion='friedman_mse', init=None,
+                           learning_rate=0.1, loss='log_loss', max_depth=3,
+                           max_features=None, max_leaf_nodes=None,
+                           min_impurity_decrease=0.0, min_samples_leaf=1,
+                           min_samples_split=2, min_weight_fraction_leaf=0.0,
+                           n_estimators=100, n_iter_no_change=None,
+                           random_state=123, subsample=1.0, tol=0.0001,
+                           validation_fraction=0.1, verbose=0,
+                           warm_start=False)
+2025-06-09 16:22:04 - __main__ - INFO - Model comparison results:
+2025-06-09 16:22:04 - __main__ - INFO - Model comparison results saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141\model_comparison_results.csv
+2025-06-09 16:22:04 - __main__ - INFO - Attempting to tune the initial best model: GradientBoostingClassifier(ccp_alpha=0.0, criterion='friedman_mse', init=None,
+                           learning_rate=0.1, loss='log_loss', max_depth=3,
+                           max_features=None, max_leaf_nodes=None,
+                           min_impurity_decrease=0.0, min_samples_leaf=1,
+                           min_samples_split=2, min_weight_fraction_leaf=0.0,
+                           n_estimators=100, n_iter_no_change=None,
+                           random_state=123, subsample=1.0, tol=0.0001,
+                           validation_fraction=0.1, verbose=0,
+                           warm_start=False)...
+2025-06-09 16:22:04 - models.model_evaluation - INFO - Tuning hyperparameters for model: GradientBoostingClassifier...
+2025-06-09 16:22:04 - models.model_evaluation - INFO - Tuning with parameters: {'n_iter': 50, 'optimize': 'F1', 'search_library': 'optuna', 'search_algorithm': 'tpe', 'early_stopping': True, 'early_stopping_max_iters': 10, 'choose_better': True}
+Processing:   0%|                                                               | 0/7 [00:00<?, ?it/s]2025-06-09 16:22:04 - optuna_integration.sklearn.sklearn - INFO - Searching the best hyperparameters using 5782 samples...
+2025-06-09 16:27:54 - optuna_integration.sklearn.sklearn - INFO - Finished hyperparameter search!
+      Accuracy     AUC  Recall   Prec.      F1   Kappa     MCC                                         
+Fold
+0       0.6891  0.7532  0.6595  0.5105  0.5755  0.3365  0.3433
+1       0.7081  0.7687  0.6324  0.5367  0.5806  0.3591  0.3619
+2       0.6903  0.7355  0.6216  0.5134  0.5623  0.3261  0.3296
+3       0.7042  0.7207  0.6432  0.5312  0.5819  0.3562  0.3601
+4       0.6990  0.7557  0.6703  0.5232  0.5877  0.3562  0.3630
+5       0.6765  0.7348  0.6486  0.4959  0.5621  0.3127  0.3198
+6       0.6903  0.7103  0.6033  0.5115  0.5536  0.3190  0.3215
+7       0.7042  0.7280  0.6250  0.5300  0.5736  0.3494  0.3522
+8       0.6903  0.7348  0.6359  0.5109  0.5666  0.3301  0.3349
+9       0.7422  0.7609  0.6739  0.5822  0.6247  0.4300  0.4326
+Mean    0.6994  0.7403  0.6414  0.5245  0.5769  0.3475  0.3519
+Std     0.0168  0.0178  0.0212  0.0225  0.0188  0.0316  0.0310
+2025-06-09 16:28:05 - models.model_evaluation - INFO - Saving final tuned and ensembled model pipeline to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/models\best_model
+Transformation Pipeline and Model Successfully Saved
+2025-06-09 16:28:05 - __main__ - INFO - Proceeding with final model: GradientBoostingClassifier(ccp_alpha=0.0, criterion='friedman_mse', init=None,
+                           learning_rate=0.002217503782158363, loss='log_loss',
+                           max_depth=4, max_features=0.6139106594944457,
+                           max_leaf_nodes=None,
+                           min_impurity_decrease=0.044719622157841275,
+                           min_samples_leaf=5, min_samples_split=6,
+                           min_weight_fraction_leaf=0.0, n_estimators=270,
+                           n_iter_no_change=None, random_state=123,
+                           subsample=0.7162364364024851, tol=0.0001,
+                           validation_fraction=0.1, verbose=0,
+                           warm_start=False)
+2025-06-09 16:28:05 - __main__ - INFO - Evaluating final model...
+2025-06-09 16:28:05 - models.model_evaluation - INFO - Evaluating model on test set: GradientBoostingClassifier(ccp_alpha=0.0, criterion='friedman_mse', init=None,
+                           learning_rate=0.002217503782158363, loss='log_loss',
+                           max_depth=4, max_features=0.6139106594944457,
+                           max_leaf_nodes=None,
+                           min_impurity_decrease=0.044719622157841275,
+                           min_samples_leaf=5, min_samples_split=6,
+                           min_weight_fraction_leaf=0.0, n_estimators=270,
+                           n_iter_no_change=None, random_state=123,
+                           subsample=0.7162364364024851, tol=0.0001,
+                           validation_fraction=0.1, verbose=0,
+                           warm_start=False)
+                          Model  Accuracy     AUC  Recall   Prec.      F1   Kappa     MCC
+0  Gradient Boosting Classifier    0.7132  0.7504  0.6376  0.5436  0.5869  0.3693  0.3721
+2025-06-09 16:28:06 - models.model_evaluation - INFO - Test set predictions saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141\test_predictions.csv
+2025-06-09 16:28:06 - __main__ - INFO - Evaluation completed. Predictions saved.
+2025-06-09 16:28:06 - __main__ - INFO - Starting Model Interpretability Analysis for final model       
+2025-06-09 16:28:06 - models.model_interpretation - INFO - Generating interpretation plots based on config: ['shap', 'pdp', 'msa', 'pfi', 'correlation']
+2025-06-09 16:28:06 - models.model_interpretation - INFO - Generating SHAP plots...
+2025-06-09 16:28:06 - models.model_interpretation - INFO - Preparing data for SHAP explainer...        
+2025-06-09 16:28:06 - models.model_interpretation - INFO - Attempting TreeExplainer for SHAP
+2025-06-09 16:28:06 - models.model_interpretation - INFO - Using TreeExplainer for SHAP
+2025-06-09 16:28:06 - models.model_interpretation - INFO - SHAP summary plot saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141\plots\shap_summary_plot.png
+2025-06-09 16:28:06 - models.model_interpretation - INFO - SHAP feature importance plot saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141\plots\shap_importance_plot.png
+2025-06-09 16:28:06 - models.model_interpretation - INFO - Restored SHAP logger level.
+2025-06-09 16:28:06 - models.model_interpretation - INFO - Generating Partial Dependence plots...      
+2025-06-09 16:28:06 - models.model_interpretation - INFO - Generating pdp interpretation plot
+2025-06-09 16:28:06 - interpret.utils._unify_data - INFO - Unifying data
+2025-06-09 16:28:08 - models.model_interpretation - INFO - Generating Morris Sensitivity Analysis...
+2025-06-09 16:28:08 - models.model_interpretation - INFO - Generating msa interpretation plot
+2025-06-09 16:28:08 - interpret.utils._unify_data - INFO - Unifying data
+2025-06-09 16:28:09 - models.model_interpretation - INFO - Generating Permutation Feature Importance...
+2025-06-09 16:28:09 - models.model_interpretation - INFO - Generating pfi interpretation plot
+14it [00:00, 63.94it/s]
+2025-06-09 16:28:09 - models.model_interpretation - INFO - Generating correlation plots...
+2025-06-09 16:28:09 - models.model_interpretation - INFO - Generating correlation interpretation plot
+2025-06-09 16:28:09 - models.model_interpretation - ERROR - Error generating correlation plot: This function only supports tree based models for binary classification: et, rf, dt, xgboost, lightgbm.        
+2025-06-09 16:28:09 - models.model_interpretation - INFO - Generating correlation interpretation plot  
+2025-06-09 16:28:09 - models.model_interpretation - ERROR - Error generating correlation plot: This function only supports tree based models for binary classification: et, rf, dt, xgboost, lightgbm.        
+2025-06-09 16:28:09 - models.model_interpretation - INFO - Generating correlation interpretation plot  
+2025-06-09 16:28:09 - models.model_interpretation - ERROR - Error generating correlation plot: This function only supports tree based models for binary classification: et, rf, dt, xgboost, lightgbm.     y', 'Age']
+2025-06-09 16:28:09 - models.model_interpretation - INFO - Checking model fairness for features: ['Gender', 'Race_Ethnicity', 'Age']
+                          Model  Accuracy     AUC  Recall   Prec.      F1   Kappa     MCC
+0  Gradient Boosting Classifier    0.7132  0.7504  0.6376  0.5436  0.5869  0.3693  0.3721
+2025-06-09 16:28:09 - fairlearn.metrics._metric_frame - WARNING - Found 790 subgroups. Evaluation may be slow
+2025-06-09 16:28:10 - fairlearn.metrics._metric_frame - WARNING - Found 790 subgroups. Evaluation may be slow
+2025-06-09 16:28:20 - models.model_interpretation - INFO - Fairness metrics saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141\fairness_metrics.csv
+2025-06-09 16:28:20 - __main__ - INFO - Model Interpretability Analysis Completed.
+2025-06-09 16:28:20 - utils.utils - INFO - Moved HTML MSA msa.html to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/interpretability   
+2025-06-09 16:28:20 - utils.utils - INFO - Moved HTML PDP pdp.html to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/interpretability   
+2025-06-09 16:28:20 - utils.utils - INFO - Moved HTML PFI pfi.html to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/interpretability   
+2025-06-09 16:28:20 - __main__ - INFO - Generating PyCaret model evaluation plots for final model...
+2025-06-09 16:28:28 - visualizations.plots - INFO - Auc plot saved
+2025-06-09 16:28:28 - visualizations.plots - INFO - Confusion_matrix plot saved
+2025-06-09 16:28:28 - visualizations.plots - INFO - Feature plot saved
+2025-06-09 16:29:48 - visualizations.plots - INFO - Threshold plot saved
+2025-06-09 16:29:48 - visualizations.plots - INFO - Pr plot saved
+2025-06-09 16:29:49 - visualizations.plots - INFO - Error plot saved
+2025-06-09 16:29:49 - visualizations.plots - INFO - Class_report plot saved
+2025-06-09 16:29:51 - visualizations.plots - INFO - Boundary plot saved
+2025-06-09 16:30:00 - visualizations.plots - INFO - Learning plot saved
+2025-06-09 16:30:00 - visualizations.plots - INFO - Calibration plot saved
+2025-06-09 16:30:01 - visualizations.plots - INFO - Lift plot saved
+2025-06-09 16:30:01 - visualizations.plots - INFO - Ks plot saved
+2025-06-09 16:30:01 - visualizations.plots - INFO - Gain plot saved
+2025-06-09 16:30:26 - visualizations.plots - INFO - Vc plot saved
+2025-06-09 16:30:26 - visualizations.plots - INFO - Parameter plot saved
+2025-06-09 16:30:26 - visualizations.plots - INFO - Feature importance plot saved
+2025-06-09 16:30:26 - utils.utils - INFO - Moved plot AUC.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots
+2025-06-09 16:30:26 - utils.utils - INFO - Moved plot Calibration Curve.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots
+2025-06-09 16:30:26 - utils.utils - INFO - Moved plot Class Report.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots
+2025-06-09 16:30:26 - utils.utils - INFO - Moved plot Confusion Matrix.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots
+2025-06-09 16:30:26 - utils.utils - INFO - Moved plot Decision Boundary.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots
+2025-06-09 16:30:26 - utils.utils - INFO - Moved plot Feature Importance.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots    
+2025-06-09 16:30:26 - utils.utils - INFO - Moved plot Gain Chart.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots
+2025-06-09 16:30:26 - utils.utils - INFO - Moved plot KS Statistic Plot.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots     
+2025-06-09 16:30:26 - utils.utils - INFO - Moved plot Learning Curve.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots        
+2025-06-09 16:30:26 - utils.utils - INFO - Moved plot Lift Chart.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots
+2025-06-09 16:30:26 - utils.utils - INFO - Moved plot Precision Recall.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots      
+2025-06-09 16:30:26 - utils.utils - INFO - Moved plot Prediction Error.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots      
+2025-06-09 16:30:26 - utils.utils - INFO - Moved plot Threshold.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots
+2025-06-09 16:30:26 - utils.utils - INFO - Moved plot Validation Curve.png to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/plots      
+2025-06-09 16:30:26 - __main__ - INFO - ================================================================================
+2025-06-09 16:30:26 - __main__ - INFO - Analysis completed successfully at 2025-06-09 16:30:26
+2025-06-09 16:30:26 - __main__ - INFO - Results saved in c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141
+2025-06-09 16:30:26 - __main__ - INFO - Log file saved to c:\Users\bntmm\Desktop\GRIFOLS\BioPredict-Data-Driven-Modeling-of-Serological-Markers\outputs/run_20250609_162141/analysis.txt
