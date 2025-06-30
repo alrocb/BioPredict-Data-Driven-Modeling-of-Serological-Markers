@@ -67,12 +67,7 @@ logs.log
 .devcontainer/
 devcontainer.json
 
-# Jupyter Notebook
-.ipynb_checkpoints
-# Ignore all content within notebooks, but keep the directory
-/notebooks/**
-!/notebooks/.gitkeep
-.ipynb
+
 
 # OS generated files
 .DS_Store
